@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
-import express from "express";
-import { apiRouter } from "./routers/apiRouter";
-import { ApiError } from "./errors/api.error";
+import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
+
 import { config } from "./configs/config";
+import { ApiError } from "./errors/api.error";
+import { apiRouter } from "./routers/api.router";
 import { delay } from "./utils/delay";
 
 const app = express();

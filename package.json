@@ -6,18 +6,27 @@
   "scripts": {
     "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server\"",
     "dev": "ts-node src/main.ts",
-    "watch:server":"tsc -p tsconfig.json  -w"
+    "watch:server":"tsc src/main.ts  -w"
   },
   "dependencies": {
     "express": "^5.1.0",
     "mongodb": "^6.16.0",
     "mongoose": "^8.15.1",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.25.36",
+    "handlebars": "^4.7.8",
+    "nodemailer": "^7.0.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.2",
     "@types/mongodb": "^4.0.7",
     "@types/mongoose": "^5.11.97",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/nodemailer": "^6.4.17",
+    "@types/handlebars": "^4.1.0",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.31.0",
