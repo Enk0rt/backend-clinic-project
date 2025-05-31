@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { isObjectIdOrHexString } from "mongoose";
 import { ZodSchema } from "zod";
 
+import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
 
 class CommonMiddleware {
@@ -20,15 +21,19 @@ class CommonMiddleware {
     }
 
     public validateBody(schema: ZodSchema<any>) {
-        return (req: Request, res: Response, next: NextFunction) => {
+        return async (req: Request, res: Response, next: NextFunction) => {
             const result = schema.safeParse(req.body);
 
             if (!result.success) {
-                const messages = result.error.errors.map((e) => e.message);
-                return res.status(400).json({ status: 400, message: messages });
+                const messages = result.error.errors
+                    .map((e) => e.message)
+                    .join(", ");
+                return next(
+                    new ApiError(StatusCodeEnums.BAD_REQUEST, messages),
+                );
             }
 
-            req.body = result.data;
+            req.body = result.data; // валідовані та чисті дані
             next();
         };
     }

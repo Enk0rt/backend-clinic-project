@@ -39,6 +39,16 @@ class UserService {
         }
         return await userRepository.deleteById(id);
     }
+
+    public async isEmailUnique(email: string): Promise<void> {
+        const user = await userRepository.getByEmail(email);
+        if (user) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "User already exists",
+            );
+        }
+    }
 }
 
 export const userService = new UserService();

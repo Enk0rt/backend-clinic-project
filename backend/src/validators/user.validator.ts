@@ -11,7 +11,7 @@ export class UserValidator {
         password: zod
             .string()
             .nonempty("Password is required")
-            .regex(new RegExp(RegexEnums.NAME), "Invalid password format"),
+            .regex(new RegExp(RegexEnums.PASSWORD), "Invalid password format"),
         name: zod
             .string()
             .nonempty("Name is required")

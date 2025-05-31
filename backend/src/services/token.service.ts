@@ -6,6 +6,7 @@ import { StatusCodeEnums } from "../enums/status-code.enums";
 import { TokenTypeEnums } from "../enums/token-type.enums";
 import { ApiError } from "../errors/api.error";
 import { ITokenPair, ITokenPayload } from "../interfaces/tokens.interface";
+import { tokenRepository } from "../repositories/token.repository";
 
 class TokenService {
     public generateTokens(payload: ITokenPayload): ITokenPair {
@@ -41,6 +42,7 @@ class TokenService {
                     "Invalid action token type",
                 );
         }
+        console.log("!!!!!!!!", secret);
         return jwt.sign(payload, secret, { expiresIn });
     }
 
@@ -74,6 +76,16 @@ class TokenService {
         } catch {
             throw new ApiError(StatusCodeEnums.UNAUTHORIZED, "Invalid token");
         }
+    }
+
+    public async isExists(
+        token: string,
+        type: TokenTypeEnums,
+    ): Promise<boolean> {
+        const iTokenPromise = await tokenRepository.findByParams({
+            [type]: token,
+        });
+        return !!iTokenPromise;
     }
 }
 

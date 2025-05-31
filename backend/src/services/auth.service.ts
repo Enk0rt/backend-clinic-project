@@ -17,16 +17,10 @@ import { userService } from "./user.service";
 class AuthService {
     public async signUp(
         data: IUserCreateDTO,
-    ): Promise<{ user: IUser; tokens: ITokenPair }> {
-        // Створити метод в userService - isEmail.unique, isActive
-
+    ): Promise<{ user: IUser; verifyToken: string }> {
+        await userService.isEmailUnique(data.email);
         const password = await passwordService.hashPass(data.password);
         const newUser = await userRepository.create({ ...data, password });
-        const tokens = tokenService.generateTokens({
-            userId: newUser._id,
-            role: newUser.role,
-        });
-        await tokenRepository.create({ ...tokens, _userId: newUser._id });
 
         const token = tokenService.generateActionToken(
             {
@@ -41,10 +35,10 @@ class AuthService {
             emailConstants[EmailEnums.ACTIVATE],
             {
                 name: newUser.name,
-                url: `${config.FRONTEND_URL}/verify/${token}`,
+                url: `${config.FRONTEND_URL}/auth/verify/${token}`,
             },
         );
-        return { user: newUser, tokens };
+        return { user: newUser, verifyToken: token };
     }
 
     public async signIn({
@@ -93,7 +87,18 @@ class AuthService {
             token,
             ActionTokenTypeEnum.ACTIVATE,
         );
-        return await userService.updateUser(userId, { isActive: true });
+
+        const user = await userService.updateUser(userId, {
+            isActive: true,
+            isVerified: true,
+        });
+
+        await emailService.sendMail(
+            user.email,
+            emailConstants[EmailEnums.WELCOME],
+            { name: user.name },
+        );
+        return user;
     }
 }
 
