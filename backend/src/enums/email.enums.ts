@@ -1,5 +1,6 @@
 export enum EmailEnums {
     WELCOME = "WELCOME",
     ACTIVATE = "ACTIVATE",
-    RECOVER = "RECOVER",
+    RECOVERY = "RECOVERY",
+    RECOVERY_SUCCESS = "RECOVERY_SUCCESS",
 }

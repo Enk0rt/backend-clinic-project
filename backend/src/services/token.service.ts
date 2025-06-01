@@ -42,7 +42,6 @@ class TokenService {
                     "Invalid action token type",
                 );
         }
-        console.log("!!!!!!!!", secret);
         return jwt.sign(payload, secret, { expiresIn });
     }
 

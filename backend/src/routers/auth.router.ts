@@ -31,4 +31,15 @@ router.post(
 router.patch("/verify/:token", authController.activate);
 router.get("/verify/:token", authController.activate);
 
+router.patch(
+    "/recovery/:token",
+    commonMiddleware.validateBody(AuthValidator.validatePassword),
+    authController.recoveryPassword,
+);
+router.post(
+    "/recovery",
+    commonMiddleware.validateBody(AuthValidator.validateEmail),
+    authController.recoveryPasswordRequest,
+);
+
 export const authRouter = router;

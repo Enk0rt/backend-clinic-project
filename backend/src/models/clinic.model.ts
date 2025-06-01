@@ -6,7 +6,9 @@ const clinicSchema = new Schema(
     {
         name: { type: String, required: true },
         city: { type: String, required: true },
+        address: { type: String, required: true },
         doctors: [{ type: Schema.Types.ObjectId, ref: "doctor" }],
+        services: [{ type: Schema.Types.ObjectId, ref: "services" }],
     },
     {
         timestamps: true,

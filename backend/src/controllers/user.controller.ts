@@ -1,45 +1,71 @@
 import { NextFunction, Request, Response } from "express";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
-import { IUserUpdateDTO } from "../interfaces/user.interface";
+import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
+import { IUser, IUserUpdateDTO } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
 class UserController {
-    public async getAll(req: Request, res: Response, next: NextFunction) {
+    public async getAll(
+        req: Request,
+        res: Response<IApiSuccessResponse<{ users: IUser[] }>>,
+        next: NextFunction,
+    ) {
         try {
-            const data = await userService.getAll();
-            res.status(StatusCodeEnums.OK).json(data);
+            const users = await userService.getAll();
+            res.status(StatusCodeEnums.OK).json({ data: { users: users } });
         } catch (e) {
             next(e);
         }
     }
 
-    public async getById(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const data = await userService.getById(id);
-            res.status(StatusCodeEnums.OK).json(data);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    public async updateById(req: Request, res: Response, next: NextFunction) {
+    public async getById(
+        req: Request,
+        res: Response<IApiSuccessResponse<{ user: IUser }>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
-            const data = req.body as IUserUpdateDTO;
-            const updatedUser = await userService.updateUser(id, data);
-            res.status(StatusCodeEnums.OK).json(updatedUser);
+            const user = await userService.getById(id);
+            res.status(StatusCodeEnums.OK).json({ data: { user: user } });
         } catch (e) {
             next(e);
         }
     }
 
-    public async delete(req: Request, res: Response, next: NextFunction) {
+    public async updateById(
+        req: Request,
+        res: Response<IApiSuccessResponse<{ user: IUser }>>,
+        next: NextFunction,
+    ) {
+        try {
+            const { id } = req.params;
+            const userData = req.body as IUserUpdateDTO;
+
+            const updatedUser = await userService.updateUser(id, {
+                ...userData,
+            });
+            res.status(StatusCodeEnums.OK).json({
+                data: { user: updatedUser },
+                details: "User info is successfully updated",
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async delete(
+        req: Request,
+        res: Response<IApiSuccessResponse<void | null>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
             await userService.delete(id);
-            res.status(StatusCodeEnums.OK).json();
+            res.status(StatusCodeEnums.OK).json({
+                data: null,
+                details: "User is deleted successfully",
+            });
         } catch (e) {
             next(e);
         }

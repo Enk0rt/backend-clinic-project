@@ -37,6 +37,22 @@ class CommonMiddleware {
             next();
         };
     }
+
+    public isAdmin() {
+        return (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const { role } = req.body;
+                if (role !== "admin") {
+                    throw new ApiError(
+                        StatusCodeEnums.FORBIDDEN,
+                        "Insufficient rights",
+                    );
+                }
+            } catch (e) {
+                next(e);
+            }
+        };
+    }
 }
 
 export const commonMiddleware = new CommonMiddleware();

@@ -100,6 +100,47 @@ class AuthService {
         );
         return user;
     }
+
+    public async recoveryPasswordRequest(user: IUser): Promise<void> {
+        const token = tokenService.generateActionToken(
+            {
+                userId: user._id,
+                role: user.role,
+            },
+            ActionTokenTypeEnum.RECOVERY,
+        );
+
+        await emailService.sendMail(
+            user.email,
+            emailConstants[EmailEnums.RECOVERY],
+            {
+                url: `${config.FRONTEND_URL}/auth/recovery/${token}`,
+            },
+        );
+    }
+
+    public async recoveryPassword(
+        token: string,
+        password: string,
+    ): Promise<IUser> {
+        const { userId } = tokenService.verifyToken(
+            token,
+            ActionTokenTypeEnum.RECOVERY,
+        );
+        const user = await userService.updateUser(userId, {
+            password: await passwordService.hashPass(password),
+        });
+
+        await emailService.sendMail(
+            user.email,
+            emailConstants[EmailEnums.RECOVERY_SUCCESS],
+            {
+                name: user.name,
+            },
+        );
+
+        return user;
+    }
 }
 
 export const authService = new AuthService();

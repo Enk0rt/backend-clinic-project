@@ -4,7 +4,8 @@ import { IDoctor } from "../interfaces/doctor.interface";
 
 const doctorSchema = new Schema(
     {
-        user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+        userInfo: { type: Schema.Types.ObjectId, ref: "user", required: true },
+        phoneNumber: { type: String },
         services: [String],
         clinics: { type: Schema.Types.ObjectId, ref: "clinic" },
     },

@@ -2,40 +2,69 @@ import { NextFunction, Request, Response } from "express";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
+import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
 import { IAuth } from "../interfaces/auth.interface";
-import { ITokenPayload } from "../interfaces/tokens.interface";
-import { IUserCreateDTO } from "../interfaces/user.interface";
+import { ITokenPair, ITokenPayload } from "../interfaces/tokens.interface";
+import { IUser, IUserCreateDTO } from "../interfaces/user.interface";
 import { authService } from "../services/auth.service";
 import { tokenService } from "../services/token.service";
 import { userService } from "../services/user.service";
 
 class AuthController {
-    public async signUp(req: Request, res: Response, next: NextFunction) {
+    public async signUp(
+        req: Request,
+        res: Response<
+            IApiSuccessResponse<{
+                user: IUser;
+                verifyToken: string;
+            }>
+        >,
+        next: NextFunction,
+    ) {
         try {
             const body = req.body as IUserCreateDTO;
-            const data = await authService.signUp(body);
-            res.status(StatusCodeEnums.OK).json(data);
+            const { user, verifyToken } = await authService.signUp(body);
+            res.status(StatusCodeEnums.CREATED).json({
+                data: { user, verifyToken },
+                details: "Sign up is successful, user is created",
+            });
         } catch (e) {
             next(e);
         }
     }
 
-    public async signIn(req: Request, res: Response, next: NextFunction) {
+    public async signIn(
+        req: Request,
+        res: Response<
+            IApiSuccessResponse<{
+                user: IUser;
+                tokens: ITokenPair;
+            }>
+        >,
+        next: NextFunction,
+    ) {
         try {
             const credentials = req.body as IAuth;
             const data = await authService.signIn(credentials);
-            res.status(StatusCodeEnums.OK).json(data);
+            res.status(StatusCodeEnums.OK).json({
+                data,
+                details: "Sign in is successful",
+            });
         } catch (e) {
             next(e);
         }
     }
 
-    public async me(req: Request, res: Response, next: NextFunction) {
+    public async me(
+        req: Request,
+        res: Response<IApiSuccessResponse<IUser>>,
+        next: NextFunction,
+    ) {
         try {
             const tokenPayload = req.res.locals.tokenPayload as ITokenPayload;
             const { userId } = tokenPayload;
             const user = await userService.getById(userId);
-            res.status(StatusCodeEnums.OK).json(user);
+            res.status(StatusCodeEnums.OK).json({ data: user });
         } catch {
             throw new ApiError(
                 StatusCodeEnums.UNAUTHORIZED,
@@ -44,7 +73,11 @@ class AuthController {
         }
     }
 
-    public async refresh(req: Request, res: Response, next: NextFunction) {
+    public async refresh(
+        req: Request,
+        res: Response<IApiSuccessResponse<ITokenPair>>,
+        next: NextFunction,
+    ) {
         try {
             const { userId, role } = req.res.locals
                 .tokenPayload as ITokenPayload;
@@ -52,17 +85,65 @@ class AuthController {
                 userId,
                 role,
             });
-            res.status(StatusCodeEnums.OK).json({ tokens: tokens });
+            res.status(StatusCodeEnums.OK).json({
+                data: tokens,
+                details: "Refresh is successful",
+            });
         } catch (e) {
             next(e);
         }
     }
 
-    public async activate(req: Request, res: Response, next: NextFunction) {
+    public async activate(
+        req: Request,
+        res: Response<IApiSuccessResponse<IUser>>,
+        next: NextFunction,
+    ) {
         try {
             const { token } = req.params;
             const user = await authService.activate(token);
-            res.status(StatusCodeEnums.OK).json(user);
+            res.status(StatusCodeEnums.OK).json({
+                data: user,
+                details: "Email is successfully verified, account activated",
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async recoveryPasswordRequest(
+        req: Request,
+        res: Response<IApiSuccessResponse<void | null>>,
+        next: NextFunction,
+    ) {
+        try {
+            const { email } = req.body;
+            const user = await userService.getByEmail(email);
+            if (user) {
+                await authService.recoveryPasswordRequest(user);
+            }
+            res.status(StatusCodeEnums.OK).json({
+                data: null,
+                details: "Check your email",
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async recoveryPassword(
+        req: Request,
+        res: Response<IApiSuccessResponse<IUser>>,
+        next: NextFunction,
+    ) {
+        try {
+            const { token } = req.params as { token: string };
+            const { password } = req.body;
+            const user = await authService.recoveryPassword(token, password);
+            res.status(StatusCodeEnums.OK).json({
+                data: user,
+                details: "Password successfully changed",
+            });
         } catch (e) {
             next(e);
         }
