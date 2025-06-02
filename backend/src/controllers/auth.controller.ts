@@ -73,6 +73,27 @@ class AuthController {
         }
     }
 
+    public async deleteMe(
+        req: Request,
+        res: Response<IApiSuccessResponse<IUser>>,
+        next: NextFunction,
+    ) {
+        try {
+            const tokenPayload = req.res.locals.tokenPayload as ITokenPayload;
+            const { userId } = tokenPayload;
+            await userService.delete(userId);
+            res.status(StatusCodeEnums.OK).json({
+                data: null,
+                details: "User is deleted successfully",
+            });
+        } catch {
+            throw new ApiError(
+                StatusCodeEnums.UNAUTHORIZED,
+                "User is not signed in",
+            );
+        }
+    }
+
     public async refresh(
         req: Request,
         res: Response<IApiSuccessResponse<ITokenPair>>,
@@ -94,17 +115,35 @@ class AuthController {
         }
     }
 
-    public async activate(
+    public async verify(
         req: Request,
         res: Response<IApiSuccessResponse<IUser>>,
         next: NextFunction,
     ) {
         try {
             const { token } = req.params;
-            const user = await authService.activate(token);
+            const user = await authService.verify(token);
             res.status(StatusCodeEnums.OK).json({
                 data: user,
                 details: "Email is successfully verified, account activated",
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async verifyRequest(
+        req: Request,
+        res: Response<IApiSuccessResponse<{ verifyToken: string }>>,
+        next: NextFunction,
+    ) {
+        try {
+            const { id } = req.params;
+            const user = await authService.verifyRequest(id);
+            res.status(StatusCodeEnums.OK).json({
+                data: user,
+                details:
+                    "New verify token is created successfully. Check your email!",
             });
         } catch (e) {
             next(e);

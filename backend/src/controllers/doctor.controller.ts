@@ -6,6 +6,7 @@ import { ApiError } from "../errors/api.error";
 import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
 import { IDoctor, IDoctorDTO } from "../interfaces/doctor.interface";
 import { IUser, IUserUpdateDTO } from "../interfaces/user.interface";
+import { adminService } from "../services/admin.service";
 import { doctorService } from "../services/doctor.service";
 import { userService } from "../services/user.service";
 
@@ -81,27 +82,21 @@ class DoctorController {
         }
     }
 
-    // public async create(
-    //     req: Request,
-    //     res: Response<
-    //         IApiSuccessResponse<{
-    //             doctor: IDoctor;
-    //             services: IService[];
-    //             clinics: IClinic[];
-    //         }>
-    //     >,
-    //     next: NextFunction,
-    // ) {
-    //     try {
-    //         const { id } = req.params;
-    //         const doctor = await doctorService.getById(id);
-    //         res.status(StatusCodeEnums.OK).json({
-    //             data: { doctor: doctor, services: null, clinics: null },
-    //         });
-    //     } catch (e) {
-    //         next(e);
-    //     }
-    // }
+    public async createByAdmin(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const doctor = await adminService.createDoctorByAdmin(req.body);
+            res.status(StatusCodeEnums.CREATED).json({
+                data: { doctor },
+                details: "Doctor was created successfully",
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export const doctorController = new DoctorController();

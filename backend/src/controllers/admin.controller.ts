@@ -11,17 +11,17 @@ class AdminController {
             const { id } = req.params;
             switch (role) {
                 case RoleEnums.ADMIN: {
-                    const user = await adminService.makeAdmin(id);
+                    const admin = await adminService.makeAdmin(id);
                     res.status(StatusCodeEnums.OK).json({
-                        user,
+                        data: { admin },
                         details: "Role is updated successfully",
                     });
                     break;
                 }
                 case RoleEnums.USER: {
-                    const admin = await adminService.makeUser(id);
+                    const user = await adminService.makeUser(id);
                     res.status(StatusCodeEnums.OK).json({
-                        admin,
+                        data: { user },
                         details: "Role is updated successfully",
                     });
                     break;
@@ -29,7 +29,7 @@ class AdminController {
                 case RoleEnums.DOCTOR: {
                     const doctor = await adminService.makeDoctor(id, role);
                     res.status(StatusCodeEnums.OK).json({
-                        doctor,
+                        data: { doctor },
                         details: "Role is updated successfully",
                     });
                     break;

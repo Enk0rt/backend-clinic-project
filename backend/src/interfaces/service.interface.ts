@@ -1,7 +1,10 @@
+import { ObjectId } from "mongodb";
+
 import { BaseInterface } from "./base.interface";
-import { IDoctor } from "./doctor.interface";
 
 export interface IService extends BaseInterface {
+    _id: string;
     name: string;
-    doctors: IDoctor[];
+    doctors: ObjectId[];
+    clinics: ObjectId[];
 }

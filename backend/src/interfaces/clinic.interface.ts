@@ -1,14 +1,17 @@
+import { ObjectId } from "mongodb";
+
 import { BaseInterface } from "./base.interface";
-import { IDoctor } from "./doctor.interface";
-import { IService } from "./service.interface";
 
 export interface IClinic extends BaseInterface {
-    _id: string;
+    _id: ObjectId;
     name: string;
     city: string;
     address: string;
-    doctors: IDoctor[];
-    services: IService[];
+    doctors: string[];
+    services: string[];
 }
 
-export type IClinicDTO = Pick<IClinic, "name" | "city" | "address" | "doctors">;
+export type IClinicDTO = Pick<
+    IClinic,
+    "name" | "city" | "address" | "doctors" | "services"
+>;

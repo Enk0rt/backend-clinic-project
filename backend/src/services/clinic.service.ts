@@ -1,7 +1,10 @@
+import mongoose from "mongoose";
+
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
 import { IClinic, IClinicDTO } from "../interfaces/clinic.interface";
 import { clinicRepository } from "../repositories/clinic.repository";
+import { checkClinicsExistAndReturnId } from "../utils/check-clinics";
 
 class ClinicService {
     public async getAll(): Promise<IClinic[]> {
@@ -21,8 +24,8 @@ class ClinicService {
         return clinic;
     }
 
-    public async getByName(name: string): Promise<IClinic> {
-        const clinic = await clinicRepository.getByName(name);
+    public async getByNames(names: string[]): Promise<IClinic[]> {
+        const clinic = await clinicRepository.getByNames(names);
 
         if (!clinic) {
             throw new ApiError(
@@ -30,7 +33,6 @@ class ClinicService {
                 "Clinic is not found",
             );
         }
-
         return clinic;
     }
 
@@ -53,6 +55,12 @@ class ClinicService {
 
     public async delete(id: string): Promise<void> {
         await clinicRepository.delete(id);
+    }
+
+    public async checkClinicsExist(
+        names: string[] | string,
+    ): Promise<mongoose.Types.ObjectId[]> {
+        return await checkClinicsExistAndReturnId(names);
     }
 }
 

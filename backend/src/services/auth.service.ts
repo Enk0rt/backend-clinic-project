@@ -22,7 +22,7 @@ class AuthService {
         const password = await passwordService.hashPass(data.password);
         const newUser = await userRepository.create({ ...data, password });
 
-        const token = tokenService.generateActionToken(
+        const verifyToken = tokenService.generateActionToken(
             {
                 userId: newUser._id,
                 role: newUser.role,
@@ -35,10 +35,10 @@ class AuthService {
             emailConstants[EmailEnums.ACTIVATE],
             {
                 name: newUser.name,
-                url: `${config.FRONTEND_URL}/auth/verify/${token}`,
+                url: `${config.FRONTEND_URL}/api/auth/verify/${verifyToken}`,
             },
         );
-        return { user: newUser, verifyToken: token };
+        return { user: newUser, verifyToken: verifyToken };
     }
 
     public async signIn({
@@ -82,9 +82,9 @@ class AuthService {
         };
     }
 
-    public async activate(token: string): Promise<IUser> {
+    public async verify(verifyToken: string): Promise<IUser> {
         const { userId } = tokenService.verifyToken(
-            token,
+            verifyToken,
             ActionTokenTypeEnum.ACTIVATE,
         );
 
@@ -99,6 +99,27 @@ class AuthService {
             { name: user.name },
         );
         return user;
+    }
+
+    public async verifyRequest(id: string): Promise<{ verifyToken: string }> {
+        const user = await userRepository.getById(id);
+        const verifyToken = tokenService.generateActionToken(
+            {
+                userId: user._id,
+                role: user.role,
+            },
+            ActionTokenTypeEnum.ACTIVATE,
+        );
+
+        await emailService.sendMail(
+            user.email,
+            emailConstants[EmailEnums.ACTIVATE],
+            {
+                name: user.name,
+                url: `${config.FRONTEND_URL}/auth/verify/${verifyToken}`,
+            },
+        );
+        return { verifyToken: verifyToken };
     }
 
     public async recoveryPasswordRequest(user: IUser): Promise<void> {

@@ -3,26 +3,23 @@ import { Doctor } from "../models/doctor.model";
 
 class DoctorRepository {
     public getAll(): Promise<IDoctor[]> {
-        return Doctor.find().populate("userInfo");
+        return Doctor.find().populate("userInfo").populate("services");
     }
 
     public getById(id: string): Promise<IDoctor> {
-        return Doctor.findById(id).populate("userInfo");
+        return Doctor.findById(id).populate("userInfo").populate("services");
     }
 
     public updateById(id: string, data: Partial<IDoctorDTO>): Promise<IDoctor> {
         return Doctor.findByIdAndUpdate(id, {
             ...data,
             updatedAt: Date.now(),
-        }).populate("userInfo");
+        })
+            .populate("userInfo")
+            .populate("services");
     }
 
-    public create(data: {
-        userInfo: string;
-        phoneNumber: null;
-        clinics: null;
-        services: null;
-    }): Promise<IDoctor> {
+    public create(data: Partial<IDoctor>): Promise<IDoctor> {
         return Doctor.create(data);
     }
 

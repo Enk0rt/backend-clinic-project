@@ -21,6 +21,13 @@ router.post(
 
 router.get("/me", authMiddleware.checkAccessToken, authController.me);
 
+router.delete(
+    "/me",
+    authMiddleware.checkAccessToken,
+    authMiddleware.checkAccessToken,
+    authController.deleteMe,
+);
+
 router.post(
     "/refresh",
     commonMiddleware.validateBody(AuthValidator.refreshToken),
@@ -28,8 +35,9 @@ router.post(
     authController.refresh,
 );
 
-router.patch("/verify/:token", authController.activate);
-router.get("/verify/:token", authController.activate);
+router.get("/verify/:token", authController.verify);
+router.post("/verify/:id", authController.verifyRequest);
+router.patch("/verify/:token", authController.verify);
 
 router.patch(
     "/recovery/:token",

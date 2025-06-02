@@ -1,6 +1,7 @@
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
+import { doctorRepository } from "../repositories/doctor.repository";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
@@ -34,6 +35,10 @@ class UserService {
 
     public async delete(id: string): Promise<void> {
         const user = await userRepository.getById(id);
+        const doctor = await doctorRepository.getById(id);
+        if (doctor) {
+            await doctorRepository.delete(id);
+        }
         if (!user) {
             throw new ApiError(StatusCodeEnums.NOT_FOUND, "User not found");
         }

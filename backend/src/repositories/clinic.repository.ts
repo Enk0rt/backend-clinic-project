@@ -3,15 +3,18 @@ import { Clinic } from "../models/clinic.model";
 
 class ClinicRepository {
     public getAll(): Promise<IClinic[]> {
-        return Clinic.find();
+        return Clinic.find().populate("doctors");
     }
 
     public getById(id: string): Promise<IClinic> {
-        return Clinic.findById(id);
+        return Clinic.findById(id).populate("doctors");
     }
 
-    public getByName(name: string): Promise<IClinic> {
-        return Clinic.findOne({ name });
+    public getByNames(names: string[]): Promise<IClinic[]> {
+        const regexes = names.map((name) => new RegExp(`^${name}$`, "i"));
+        return Clinic.find({ name: { $in: regexes } })
+            .populate("services")
+            .populate("doctors");
     }
 
     public create(data: IClinicDTO): Promise<IClinic> {
@@ -19,7 +22,12 @@ class ClinicRepository {
     }
 
     public updateById(id: string, data: Partial<IClinic>): Promise<IClinic> {
-        return Clinic.findByIdAndUpdate(id, { ...data, updatedAt: Date.now() });
+        return Clinic.findByIdAndUpdate(id, {
+            ...data,
+            updatedAt: Date.now(),
+        })
+            .populate("services")
+            .populate("doctors");
     }
 
     public async delete(id: string): Promise<void> {
