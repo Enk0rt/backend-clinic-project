@@ -36,7 +36,11 @@ router.post(
 );
 
 router.get("/verify/:token", authController.verify);
-router.post("/verify/:id", authController.verifyRequest);
+router.post(
+    "/verify/:id",
+    commonMiddleware.isValidated("id"),
+    authController.verifyRequest,
+);
 router.patch("/verify/:token", authController.verify);
 
 router.patch(

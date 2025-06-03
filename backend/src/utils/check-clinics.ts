@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 import { IClinic } from "../interfaces/clinic.interface";
 import { clinicRepository } from "../repositories/clinic.repository";
-import { doctorServicesRepository } from "../repositories/doctor-services.repository";
+import { clinicService } from "../services/clinic.service";
 
 export const checkClinicsExistAndReturnId = async (
     clinics: string[] | string,
@@ -11,19 +11,18 @@ export const checkClinicsExistAndReturnId = async (
 
     if (!clinics) return [];
 
-    const normalizedClinicNames = (Array.isArray(clinics) ? clinics : [clinics])
+    const normalizedClinicNames = (
+        Array.isArray(clinics) ? clinics : clinics.split(",")
+    )
         .filter((clinic): clinic is string => typeof clinic === "string")
-        .map((clinic) => clinic.trim())
+        .map((clinic) => clinic.trim().toLowerCase())
         .filter((clinic) => clinic.length > 0);
 
     const uniqueClinicNames = [...new Set(normalizedClinicNames)];
 
-    if (uniqueClinicNames.length === 0) {
-        return [];
-    }
+    if (uniqueClinicNames.length === 0) return [];
 
-    const existingClinics =
-        await doctorServicesRepository.getByNames(uniqueClinicNames);
+    const existingClinics = await clinicService.getByNames(uniqueClinicNames);
     const existingNames = existingClinics.map((service) => service.name);
 
     const newNames = uniqueClinicNames.filter(

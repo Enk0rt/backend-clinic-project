@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { RoleEnums } from "../enums/role.enums";
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { adminService } from "../services/admin.service";
+import { userService } from "../services/user.service";
 
 class AdminController {
     public async changeRole(req: Request, res: Response, next: NextFunction) {
@@ -35,6 +36,25 @@ class AdminController {
                     break;
                 }
             }
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async deactivateUser(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const { id } = req.params;
+            const updatedUser = await userService.updateUser(id, {
+                isActive: false,
+            });
+            res.status(StatusCodeEnums.OK).json({
+                data: updatedUser,
+                details: "User is deactivated successfully",
+            });
         } catch (e) {
             next(e);
         }

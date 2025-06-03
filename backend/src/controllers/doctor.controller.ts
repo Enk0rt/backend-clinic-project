@@ -1,11 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
-import { RoleEnums } from "../enums/role.enums";
 import { StatusCodeEnums } from "../enums/status-code.enums";
-import { ApiError } from "../errors/api.error";
 import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
-import { IDoctor, IDoctorDTO } from "../interfaces/doctor.interface";
-import { IUser, IUserUpdateDTO } from "../interfaces/user.interface";
+import { IDoctor, IDoctorUpdateDTO } from "../interfaces/doctor.interface";
+import { IUserUpdateDTO } from "../interfaces/user.interface";
 import { adminService } from "../services/admin.service";
 import { doctorService } from "../services/doctor.service";
 import { userService } from "../services/user.service";
@@ -40,29 +38,19 @@ class DoctorController {
 
     public async updateById(
         req: Request,
-        res: Response<IApiSuccessResponse<{ user: IUser }>>,
+        res: Response<IApiSuccessResponse<IDoctor>>,
         next: NextFunction,
     ) {
         try {
-            const isDoctor = req.body.role[RoleEnums.DOCTOR] as IUser;
             const { id } = req.params;
-            const userData = req.body as IUserUpdateDTO;
 
-            if (!isDoctor) {
-                next(
-                    new ApiError(
-                        StatusCodeEnums.FORBIDDEN,
-                        "Doctor role is needed",
-                    ),
-                );
-            }
-            const doctorData = req.body as IDoctorDTO;
-            const updatedUser = await userService.updateUser(id, {
-                ...userData,
-                ...doctorData,
-            });
+            const userData = req.body as IUserUpdateDTO;
+            const doctorData = req.body as IDoctorUpdateDTO;
+            await userService.updateUser(id, userData);
+
+            const updatedDoctor = await doctorService.update(id, doctorData);
             res.status(StatusCodeEnums.OK).json({
-                data: { user: updatedUser },
+                data: updatedDoctor,
                 details: "Doctor info is successfully updated",
             });
         } catch (e) {

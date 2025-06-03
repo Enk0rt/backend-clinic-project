@@ -3,8 +3,6 @@ import { emailConstants } from "../constants/email.constants";
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { EmailEnums } from "../enums/email.enums";
 import { RoleEnums } from "../enums/role.enums";
-import { StatusCodeEnums } from "../enums/status-code.enums";
-import { ApiError } from "../errors/api.error";
 import {
     IDoctor,
     IDoctorCreateByAdminDTO,
@@ -38,19 +36,13 @@ class AdminService {
         const user = await adminRepository.makeDoctor(id);
 
         if (role === RoleEnums.DOCTOR) {
-            const exists = await doctorService.getById(user._id);
-            if (exists) {
-                throw new ApiError(
-                    StatusCodeEnums.FORBIDDEN,
-                    "Doctor already exists",
-                );
-            }
-            await doctorService.create({
-                _id: user._id,
-                userInfo: user._id,
-            });
-            return await doctorService.getById(id);
+            await doctorService.isDoctorExist(id);
         }
+        await doctorService.create({
+            _id: user._id,
+            userInfo: user._id,
+        });
+        return await doctorService.getById(id);
     }
 
     public async createDoctorByAdmin(

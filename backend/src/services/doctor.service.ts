@@ -1,9 +1,10 @@
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IDoctor, IDoctorDTO } from "../interfaces/doctor.interface";
+import { IDoctor, IDoctorUpdateDTO } from "../interfaces/doctor.interface";
 import { doctorRepository } from "../repositories/doctor.repository";
-import { userRepository } from "../repositories/user.repository";
 import { adminService } from "./admin.service";
+import { clinicService } from "./clinic.service";
+import { doctorServicesService } from "./doctor-services.service";
 
 class DoctorService {
     public async getAll(): Promise<IDoctor[]> {
@@ -16,9 +17,24 @@ class DoctorService {
 
     public async update(
         id: string,
-        data: Partial<IDoctorDTO>,
-    ): Promise<IDoctorDTO> {
-        return await doctorRepository.updateById(id, data);
+        data: Partial<IDoctorUpdateDTO>,
+    ): Promise<IDoctor> {
+        const servicesId = await doctorServicesService.checkServicesExist(
+            data.services,
+        );
+        const clinicsId = await clinicService.checkClinicsExist(data.clinics);
+
+        const updatedDoctor = await doctorRepository.updateById(id, {
+            ...data,
+            ...(servicesId && { services: servicesId }),
+            ...(clinicsId && { clinics: clinicsId }),
+        });
+
+        if (!updatedDoctor) {
+            throw new ApiError(StatusCodeEnums.NOT_FOUND, "Doctor not found");
+        }
+
+        return await doctorService.getById(id);
     }
 
     public async create(data: Partial<IDoctor>): Promise<IDoctor> {
@@ -28,8 +44,9 @@ class DoctorService {
     public async delete(id: string) {
         await adminService.makeUser(id);
     }
-    public async isEmailUnique(email: string): Promise<void> {
-        const doctor = await userRepository.getByEmail(email);
+
+    public async isDoctorExist(id: string): Promise<void> {
+        const doctor = await doctorRepository.getById(id);
         if (doctor) {
             throw new ApiError(
                 StatusCodeEnums.BAD_REQUEST,

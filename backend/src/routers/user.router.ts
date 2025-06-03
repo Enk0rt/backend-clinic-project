@@ -9,8 +9,19 @@ import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
 
-router.get("/", userController.getAll);
-router.get("/:id", commonMiddleware.isValidated("id"), userController.getById);
+router.get(
+    "/",
+    authMiddleware.checkAccessToken,
+    permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    userController.getAll,
+);
+router.get(
+    "/:id",
+    commonMiddleware.isValidated("id"),
+    authMiddleware.checkAccessToken,
+    permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    userController.getById,
+);
 router.put(
     "/:id",
     commonMiddleware.isValidated("id"),

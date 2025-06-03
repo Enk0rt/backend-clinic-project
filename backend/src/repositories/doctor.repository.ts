@@ -1,22 +1,29 @@
-import { IDoctor, IDoctorDTO } from "../interfaces/doctor.interface";
+import { IDoctor } from "../interfaces/doctor.interface";
 import { Doctor } from "../models/doctor.model";
 
 class DoctorRepository {
     public getAll(): Promise<IDoctor[]> {
-        return Doctor.find().populate("userInfo").populate("services");
+        return Doctor.find()
+            .populate("userInfo")
+            .populate("services")
+            .populate("clinics");
     }
 
     public getById(id: string): Promise<IDoctor> {
-        return Doctor.findById(id).populate("userInfo").populate("services");
+        return Doctor.findById(id)
+            .populate("userInfo")
+            .populate("services")
+            .populate("clinics");
     }
 
-    public updateById(id: string, data: Partial<IDoctorDTO>): Promise<IDoctor> {
+    public updateById(id: string, data: Partial<IDoctor>): Promise<IDoctor> {
         return Doctor.findByIdAndUpdate(id, {
             ...data,
             updatedAt: Date.now(),
         })
             .populate("userInfo")
-            .populate("services");
+            .populate("services")
+            .populate("clinics");
     }
 
     public create(data: Partial<IDoctor>): Promise<IDoctor> {

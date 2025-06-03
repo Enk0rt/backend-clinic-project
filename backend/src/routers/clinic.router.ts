@@ -12,6 +12,7 @@ router.get("/", authMiddleware.checkAccessToken, clinicController.getAll);
 router.get(
     "/:id",
     commonMiddleware.isValidated("id"),
+    authMiddleware.checkAccessToken,
     clinicController.getById,
 );
 router.post(
@@ -27,5 +28,10 @@ router.put(
     permissionMiddleware.checkRole([RoleEnums.DOCTOR, RoleEnums.ADMIN]),
     clinicController.updateById,
 );
-
+router.delete(
+    "/:id",
+    authMiddleware.checkAccessToken,
+    permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    clinicController.deleteById,
+);
 export const clinicRouter = router;

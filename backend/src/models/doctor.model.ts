@@ -31,8 +31,22 @@ function flattenUserInfo<
 
 function transformDoctor(doc: any, ret: any) {
     if (ret.services && Array.isArray(ret.services)) {
-        ret.services = ret.services.map((s: any) =>
-            typeof s === "object" && s !== null ? s.name : s,
+        ret.services = ret.services.map((service: any) =>
+            typeof service === "object" && service !== null
+                ? service.name
+                : service,
+        );
+    }
+
+    if (ret.clinics && Array.isArray(ret.clinics)) {
+        ret.clinics = ret.clinics.map((clinic: any) =>
+            typeof clinic === "object" && clinic !== null
+                ? {
+                      name: clinic.name,
+                      city: clinic.city,
+                      address: clinic.address,
+                  }
+                : clinic,
         );
     }
     return flattenUserInfo(doc, ret);

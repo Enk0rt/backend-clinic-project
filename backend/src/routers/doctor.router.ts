@@ -12,21 +12,29 @@ router.get("/", doctorController.getAll);
 router.get(
     "/:id",
     commonMiddleware.isValidated("id"),
+    authMiddleware.checkAccessToken,
     doctorController.getById,
 );
 router.put(
     "/:id",
+    commonMiddleware.isValidated("id"),
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.ADMIN, RoleEnums.DOCTOR]),
-    commonMiddleware.isValidated("id"),
     doctorController.updateById,
 );
 router.delete(
     "/:id",
+    commonMiddleware.isValidated("id"),
     authMiddleware.checkAccessToken,
-    permissionMiddleware.checkRole([RoleEnums.ADMIN, RoleEnums.DOCTOR]),
+    permissionMiddleware.checkRole([RoleEnums.ADMIN]),
     doctorController.delete,
 );
-router.post("/", doctorController.createByAdmin);
+
+router.post(
+    "/",
+    authMiddleware.checkAccessToken,
+    permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    doctorController.createByAdmin,
+);
 
 export const doctorRouter = router;
