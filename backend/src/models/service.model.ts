@@ -11,6 +11,12 @@ const serviceSchema = new Schema(
     {
         versionKey: false,
         timestamps: true,
+        toObject: {
+            virtuals: false,
+        },
+        toJSON: {
+            virtuals: false,
+        },
     },
 );
 

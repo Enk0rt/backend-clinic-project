@@ -18,6 +18,7 @@ class UserRepository {
         const page = Number(query.page) > 0 ? Number(query.page) : 1;
         const pageSize = Number(query.pageSize);
         const skip = query.pageSize * (query.page - 1);
+
         const filteredObject: FilterQuery<IUser> = { isDeleted: false };
         if (query.search) {
             const regex = new RegExp(`.*${query.search}.*`, "i");
@@ -33,7 +34,7 @@ class UserRepository {
 
         const [users, total] = await Promise.all([
             User.find(filteredObject)
-                .limit(query.pageSize)
+                .limit(pageSize)
                 .skip(skip)
                 .sort({ [query.sort]: sortDirection }),
             User.find(filteredObject).countDocuments(),

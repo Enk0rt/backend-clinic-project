@@ -3,14 +3,29 @@ import * as mongoose from "mongoose";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IService } from "../interfaces/service.interface";
+import { IService, IServiceQuery } from "../interfaces/service.interface";
 import { Doctor } from "../models/doctor.model";
 import { Service } from "../models/service.model";
 import { doctorServicesRepository } from "../repositories/doctor-services.repository";
 
 class DoctorServicesService {
-    public async getAll(): Promise<IService[]> {
-        return await doctorServicesRepository.getAll();
+    public async getAll(query: IServiceQuery): Promise<{
+        services: IService[];
+        pageSize: number;
+        page: number;
+        totalPages: number;
+        total: number;
+    }> {
+        const allowedSortNames = ["name"];
+
+        if (query.sort && !allowedSortNames.includes(query.sort)) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "Invalid sort value",
+            );
+        }
+
+        return await doctorServicesRepository.getAll(query);
     }
 
     public async getById(id: string): Promise<IService> {

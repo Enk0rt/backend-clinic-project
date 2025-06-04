@@ -25,8 +25,8 @@ class DoctorController {
                 await doctorService.getAll(query);
             res.status(StatusCodeEnums.OK).json({
                 data: doctors,
-                pageSize: pageSize,
-                page: page,
+                pageSize,
+                page,
                 totalPages,
                 total,
             });

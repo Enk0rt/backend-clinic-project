@@ -22,10 +22,10 @@ class UserController {
                 await userService.getAll(query);
             res.status(StatusCodeEnums.OK).json({
                 data: users,
-                pageSize: pageSize,
-                page: page,
+                pageSize,
+                page,
                 totalPages,
-                total: total,
+                total,
             });
         } catch (e) {
             next(e);

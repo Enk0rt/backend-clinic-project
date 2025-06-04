@@ -1,13 +1,29 @@
 import { NextFunction, Request, Response } from "express";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
+import {
+    IServiceListResponse,
+    IServiceQuery,
+} from "../interfaces/service.interface";
 import { doctorServicesService } from "../services/doctor-services.service";
 
 class DoctorServicesController {
-    public async getAll(req: Request, res: Response, next: NextFunction) {
+    public async getAll(
+        req: Request,
+        res: Response<IServiceListResponse>,
+        next: NextFunction,
+    ) {
         try {
-            const services = await doctorServicesService.getAll();
-            res.status(StatusCodeEnums.OK).json(services);
+            const query = req.query as any as IServiceQuery;
+            const { services, page, pageSize, total, totalPages } =
+                await doctorServicesService.getAll(query);
+            res.status(StatusCodeEnums.OK).json({
+                data: services,
+                pageSize,
+                page,
+                total,
+                totalPages,
+            });
         } catch (e) {
             next(e);
         }
