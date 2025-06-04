@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
 
 import { IService } from "../interfaces/service.interface";
-import { doctorServicesRepository } from "../repositories/doctor-services.repository";
 import { doctorServicesService } from "../services/doctor-services.service";
 
 export const checkServicesExistAndReturnId = async (
     services: string[] | string | undefined | null,
-): Promise<mongoose.Types.ObjectId[]> => {
-    if (!services) return [];
-
+): Promise<{
+    existing: IService[];
+    created: IService[];
+    servicesId: mongoose.Types.ObjectId[];
+}> => {
+    if (!services) return { existing: [], created: [], servicesId: [] };
     const normalizedServicesNames = (
         Array.isArray(services) ? services : services.split(",")
     )
@@ -18,8 +20,8 @@ export const checkServicesExistAndReturnId = async (
 
     const uniqueServicesNames = [...new Set(normalizedServicesNames)];
 
-    if (uniqueServicesNames.length === 0) return [];
-
+    if (uniqueServicesNames.length === 0)
+        return { existing: [], created: [], servicesId: [] };
     const existingServices =
         await doctorServicesService.getByNames(uniqueServicesNames);
     const existingNames = existingServices.map((service) => service.name);
@@ -32,12 +34,15 @@ export const checkServicesExistAndReturnId = async (
     if (newNames.length > 0) {
         createdServices = await Promise.all(
             newNames.map((name) =>
-                doctorServicesRepository.create({ name } as IService),
+                doctorServicesService.create({ name } as IService),
             ),
         );
     }
 
-    return [...existingServices, ...createdServices].map(
-        (service) => service._id,
-    );
+    const all = [...existingServices, ...createdServices];
+    return {
+        existing: existingServices,
+        created: createdServices,
+        servicesId: all.map((service) => service._id),
+    };
 };

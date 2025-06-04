@@ -5,8 +5,8 @@ import { IService } from "../interfaces/service.interface";
 const serviceSchema = new Schema(
     {
         name: { type: String },
-        doctors: { type: Schema.Types.ObjectId, ref: "doctor" },
-        clinics: { type: Schema.Types.ObjectId, ref: "clinic" },
+        doctors: { type: [Schema.Types.ObjectId], ref: "doctor", default: [] },
+        clinics: { type: [Schema.Types.ObjectId], ref: "clinic", default: [] },
     },
     {
         versionKey: false,

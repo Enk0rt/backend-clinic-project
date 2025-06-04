@@ -6,8 +6,8 @@ export interface IDoctor extends BaseInterface {
     _id: string;
     userInfo: string;
     phoneNumber: string;
-    services: ObjectId[] | string[];
-    clinics: ObjectId[] | string[];
+    services: ObjectId[];
+    clinics: ObjectId[];
 }
 
 export interface IDoctorCreateByAdminDTO {

@@ -27,9 +27,9 @@ class ClinicController {
     public async create(req: Request, res: Response, next: NextFunction) {
         try {
             const clinicData = req.body as IClinicDTO;
-            await clinicService.create(clinicData);
+            const clinic = await clinicService.create(clinicData);
             res.status(StatusCodeEnums.CREATED).json({
-                clinic: clinicData,
+                clinic: clinic,
                 details: "New Clinic is created successfully",
             });
         } catch (e) {

@@ -11,9 +11,9 @@ import { IUser } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 import { adminRepository } from "../repositories/admin.repository";
 import { doctorRepository } from "../repositories/doctor.repository";
-import { clinicService } from "./clinic.service";
+import { checkClinicsExistAndReturnId } from "../utils/check-clinics";
+import { checkServicesExistAndReturnId } from "../utils/check-services";
 import { doctorService } from "./doctor.service";
-import { doctorServicesService } from "./doctor-services.service";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
@@ -75,10 +75,10 @@ class AdminService {
             },
         );
 
-        const servicesId = await doctorServicesService.checkServicesExist(
+        const { servicesId } = await checkServicesExistAndReturnId(
             data.services,
         );
-        const clinicsId = await clinicService.checkClinicsExist(data.clinics);
+        const { clinicsId } = await checkClinicsExistAndReturnId(data.clinics);
 
         const doctor = await doctorRepository.create({
             _id: newUser._id,

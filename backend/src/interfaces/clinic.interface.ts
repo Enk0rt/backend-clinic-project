@@ -1,9 +1,7 @@
-import { ObjectId } from "mongodb";
-
 import { BaseInterface } from "./base.interface";
 
 export interface IClinic extends BaseInterface {
-    _id: ObjectId;
+    _id: string;
     name: string;
     city: string;
     address: string;

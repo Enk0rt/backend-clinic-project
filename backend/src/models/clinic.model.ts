@@ -5,10 +5,10 @@ import { IClinic } from "../interfaces/clinic.interface";
 const clinicSchema = new Schema(
     {
         name: { type: String, required: true },
-        city: { type: String },
-        address: { type: String },
-        doctors: [{ type: Schema.Types.ObjectId, ref: "doctor" }],
-        services: [{ type: Schema.Types.ObjectId, ref: "services" }],
+        city: { type: String, default: null },
+        address: { type: String, default: null },
+        doctors: { type: [Schema.Types.ObjectId], ref: "doctor" },
+        services: { type: [Schema.Types.ObjectId], ref: "service" },
     },
     {
         timestamps: true,

@@ -6,10 +6,12 @@ import { clinicService } from "../services/clinic.service";
 
 export const checkClinicsExistAndReturnId = async (
     clinics: string[] | string,
-): Promise<mongoose.Types.ObjectId[]> => {
-    if (!clinics) return [];
-
-    if (!clinics) return [];
+): Promise<{
+    existing: IClinic[];
+    created: IClinic[];
+    clinicsId: mongoose.Types.ObjectId[];
+}> => {
+    if (!clinics) return { existing: [], created: [], clinicsId: [] };
 
     const normalizedClinicNames = (
         Array.isArray(clinics) ? clinics : clinics.split(",")
@@ -20,7 +22,8 @@ export const checkClinicsExistAndReturnId = async (
 
     const uniqueClinicNames = [...new Set(normalizedClinicNames)];
 
-    if (uniqueClinicNames.length === 0) return [];
+    if (uniqueClinicNames.length === 0)
+        return { existing: [], created: [], clinicsId: [] };
 
     const existingClinics = await clinicService.getByNames(uniqueClinicNames);
     const existingNames = existingClinics.map((service) => service.name);
@@ -38,7 +41,10 @@ export const checkClinicsExistAndReturnId = async (
         );
     }
 
-    return [...existingClinics, ...createdClinics].map(
-        (service) => service._id,
-    );
+    const all = [...existingClinics, ...createdClinics];
+    return {
+        existing: existingClinics,
+        created: createdClinics,
+        clinicsId: all.map((clinic) => clinic._id),
+    };
 };

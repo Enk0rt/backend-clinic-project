@@ -8,7 +8,11 @@ import { permissionMiddleware } from "../middleware/permission.middleware";
 
 const router = Router();
 
-router.get("/", doctorServicesController.getAll);
+router.get(
+    "/",
+    authMiddleware.checkAccessToken,
+    doctorServicesController.getAll,
+);
 router.get(
     "/:id",
     commonMiddleware.isValidated("id"),

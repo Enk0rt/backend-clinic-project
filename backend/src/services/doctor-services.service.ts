@@ -24,12 +24,23 @@ class DoctorServicesService {
         return service;
     }
 
+    public async getByName(name: string): Promise<IService> {
+        return await doctorServicesRepository.getByName(name);
+    }
     public async getByNames(names: string[]): Promise<IService[]> {
         return await doctorServicesRepository.getByNames(names);
     }
 
-    public async create(data: IService): Promise<IService> {
-        return await doctorServicesRepository.create(data);
+    public async create(data: Partial<IService>): Promise<IService> {
+        const isExist = await doctorServicesRepository.getByName(data.name);
+        if (isExist) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "Service already exists",
+            );
+        }
+        const newService = await doctorServicesRepository.create(data);
+        return await doctorServicesRepository.getByName(newService.name);
     }
 
     public async updateById(id: string, data: IService): Promise<IService> {
@@ -52,7 +63,8 @@ class DoctorServicesService {
     public async checkServicesExist(
         names: string[] | string,
     ): Promise<mongoose.Types.ObjectId[]> {
-        return await checkServicesExistAndReturnId(names);
+        const { servicesId } = await checkServicesExistAndReturnId(names);
+        return servicesId;
     }
 }
 

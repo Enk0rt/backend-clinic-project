@@ -26,8 +26,8 @@ class DoctorServicesController {
     public async create(req: Request, res: Response, next: NextFunction) {
         try {
             const data = req.body;
-            const services = await doctorServicesService.create(data);
-            res.status(StatusCodeEnums.OK).json(services);
+            const service = await doctorServicesService.create(data);
+            res.status(StatusCodeEnums.OK).json(service);
         } catch (e) {
             next(e);
         }
@@ -37,8 +37,8 @@ class DoctorServicesController {
         try {
             const { id } = req.params;
             const data = req.body;
-            const services = await doctorServicesService.updateById(id, data);
-            res.status(StatusCodeEnums.OK).json(services);
+            const service = await doctorServicesService.updateById(id, data);
+            res.status(StatusCodeEnums.OK).json(service);
         } catch (e) {
             next(e);
         }

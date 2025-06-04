@@ -1,12 +1,21 @@
+import { ObjectId } from "mongodb";
+
 import { IService } from "../interfaces/service.interface";
 import { Service } from "../models/service.model";
 
 class DoctorServicesRepository {
     public getAll(): Promise<IService[]> {
-        return Service.find().populate("doctors").populate("clinics");
+        return Service.find().populate({
+            path: "doctors",
+            select: "phoneNumber userId",
+            populate: {
+                path: "userInfo",
+                select: "name surname age phoneNumber id",
+            },
+        });
     }
 
-    public getById(id: string): Promise<IService> {
+    public getById(id: string | ObjectId): Promise<IService> {
         return Service.findById(id).populate("doctors").populate("clinics");
     }
 
@@ -17,11 +26,20 @@ class DoctorServicesRepository {
             .populate("clinics");
     }
 
-    public create(data: IService): Promise<IService> {
+    public getByName(name: string): Promise<IService> {
+        return Service.findOne({ name })
+            .populate("doctors")
+            .populate("clinics");
+    }
+
+    public create(data: Partial<IService>): Promise<IService> {
         return Service.create(data);
     }
 
-    public updateById(id: string, data: Partial<IService>): Promise<IService> {
+    public updateById(
+        id: string | ObjectId,
+        data: Partial<IService>,
+    ): Promise<IService> {
         return Service.findByIdAndUpdate(id, {
             ...data,
             updatedAt: Date.now(),

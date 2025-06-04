@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
-
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
 import { IClinic, IClinicDTO } from "../interfaces/clinic.interface";
 import { clinicRepository } from "../repositories/clinic.repository";
-import { checkClinicsExistAndReturnId } from "../utils/check-clinics";
 
 class ClinicService {
     public async getAll(): Promise<IClinic[]> {
@@ -36,11 +33,34 @@ class ClinicService {
         return clinic;
     }
 
-    public async create(data: IClinicDTO): Promise<IClinic> {
-        return await clinicRepository.create(data);
+    public async getByName(name: string): Promise<IClinic> {
+        const clinic = await clinicRepository.getByName(name);
+
+        if (!clinic) {
+            throw new ApiError(
+                StatusCodeEnums.NOT_FOUND,
+                "Clinic is not found",
+            );
+        }
+        return clinic;
     }
 
-    public async updateById(id: string, data: IClinicDTO): Promise<IClinic> {
+    public async create(data: Partial<IClinicDTO>): Promise<IClinic> {
+        const isExist = await clinicRepository.getByName(data.name);
+        if (isExist) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "Clinic already exists",
+            );
+        }
+        const newClinic = await clinicRepository.create(data);
+        return await clinicRepository.getByName(newClinic.name);
+    }
+
+    public async updateById(
+        id: string,
+        data: Partial<IClinic>,
+    ): Promise<IClinic> {
         const clinic = await clinicRepository.updateById(id, data);
 
         if (!clinic) {
@@ -55,12 +75,6 @@ class ClinicService {
 
     public async delete(id: string): Promise<void> {
         await clinicRepository.delete(id);
-    }
-
-    public async checkClinicsExist(
-        names: string[] | string,
-    ): Promise<mongoose.Types.ObjectId[]> {
-        return await checkClinicsExistAndReturnId(names);
     }
 }
 
