@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { BaseInterface } from "./base.interface";
 
 export interface IClinic extends BaseInterface {
@@ -6,7 +8,7 @@ export interface IClinic extends BaseInterface {
     city: string;
     address: string;
     doctors: string[];
-    services: string[];
+    services: ObjectId[];
 }
 
 export type IClinicDTO = Pick<

@@ -1,8 +1,11 @@
+import { ObjectId } from "mongodb";
 import * as mongoose from "mongoose";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
 import { IService } from "../interfaces/service.interface";
+import { Doctor } from "../models/doctor.model";
+import { Service } from "../models/service.model";
 import { doctorServicesRepository } from "../repositories/doctor-services.repository";
 import { checkServicesExistAndReturnId } from "../utils/check-services";
 
@@ -27,6 +30,7 @@ class DoctorServicesService {
     public async getByName(name: string): Promise<IService> {
         return await doctorServicesRepository.getByName(name);
     }
+
     public async getByNames(names: string[]): Promise<IService[]> {
         return await doctorServicesRepository.getByNames(names);
     }
@@ -65,6 +69,46 @@ class DoctorServicesService {
     ): Promise<mongoose.Types.ObjectId[]> {
         const { servicesId } = await checkServicesExistAndReturnId(names);
         return servicesId;
+    }
+
+    public async checkServiceOrCreate(serviceName: string): Promise<ObjectId> {
+        let service = await this.getByName(serviceName);
+        if (!service) {
+            service = await this.create({
+                name: serviceName,
+                doctors: [],
+                clinics: [],
+            });
+        }
+        return new mongoose.Types.ObjectId(service._id);
+    }
+
+    public async syncServiceRelations(serviceId: ObjectId) {
+        const doctors = await Doctor.find({ services: serviceId });
+
+        const doctorIds = new Set<string>();
+        const clinicIds = new Set<string>();
+
+        for (const doctor of doctors) {
+            doctorIds.add(doctor._id.toString());
+            for (const clinicId of doctor.clinics) {
+                clinicIds.add(clinicId.toString());
+            }
+        }
+
+        await Service.updateOne(
+            { _id: serviceId },
+            {
+                $set: {
+                    doctors: Array.from(doctorIds).map(
+                        (id) => new ObjectId(id),
+                    ),
+                    clinics: Array.from(clinicIds).map(
+                        (id) => new ObjectId(id),
+                    ),
+                },
+            },
+        );
     }
 }
 

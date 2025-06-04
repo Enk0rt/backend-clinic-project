@@ -1,6 +1,11 @@
+import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
+
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
 import { IClinic, IClinicDTO } from "../interfaces/clinic.interface";
+import { Clinic } from "../models/clinic.model";
+import { Doctor } from "../models/doctor.model";
 import { clinicRepository } from "../repositories/clinic.repository";
 
 class ClinicService {
@@ -75,6 +80,46 @@ class ClinicService {
 
     public async delete(id: string): Promise<void> {
         await clinicRepository.delete(id);
+    }
+
+    public async checkClinicOrCreate(clinicName: string): Promise<ObjectId> {
+        let clinic = await clinicRepository.getByName(clinicName);
+        if (!clinic) {
+            clinic = await this.create({
+                name: clinicName,
+                doctors: [],
+                services: [],
+            });
+        }
+        return new mongoose.Types.ObjectId(clinic._id);
+    }
+
+    public async syncClinicRelations(clinicId: ObjectId) {
+        const doctors = await Doctor.find({ clinics: clinicId });
+        const doctorIds = new Set<string>();
+        const serviceIdsSet = new Set<string>();
+
+        for (const doctor of doctors) {
+            doctorIds.add(doctor._id.toString());
+
+            for (const serviceId of doctor.services) {
+                serviceIdsSet.add(serviceId.toString());
+            }
+        }
+
+        await Clinic.updateOne(
+            { _id: clinicId },
+            {
+                $set: {
+                    doctors: Array.from(doctorIds).map(
+                        (id) => new ObjectId(id),
+                    ),
+                    services: Array.from(serviceIdsSet).map(
+                        (id) => new ObjectId(id),
+                    ),
+                },
+            },
+        );
     }
 }
 

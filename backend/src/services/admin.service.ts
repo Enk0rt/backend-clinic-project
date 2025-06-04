@@ -11,11 +11,10 @@ import { IUser } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 import { adminRepository } from "../repositories/admin.repository";
 import { doctorRepository } from "../repositories/doctor.repository";
-import { checkClinicsExistAndReturnId } from "../utils/check-clinics";
-import { checkServicesExistAndReturnId } from "../utils/check-services";
 import { doctorService } from "./doctor.service";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
+import { syncRelationsService } from "./sync-relations.service";
 import { tokenService } from "./token.service";
 import { userService } from "./user.service";
 
@@ -75,20 +74,27 @@ class AdminService {
             },
         );
 
-        const { servicesId } = await checkServicesExistAndReturnId(
-            data.services,
-        );
-        const { clinicsId } = await checkClinicsExistAndReturnId(data.clinics);
-
-        const doctor = await doctorRepository.create({
+        await doctorRepository.create({
             _id: newUser._id,
             userInfo: newUser._id,
             phoneNumber: data.phoneNumber ?? null,
-            services: servicesId,
-            clinics: clinicsId,
+            services: [],
+            clinics: [],
         });
 
-        return await doctorRepository.getById(doctor._id);
+        const { clinicIds, serviceIds } =
+            await syncRelationsService.syncServicesAndClinics(
+                newUser._id,
+                data.services,
+                data.clinics,
+            );
+
+        await doctorRepository.updateById(newUser._id, {
+            services: serviceIds,
+            clinics: clinicIds,
+        });
+
+        return await doctorRepository.getById(newUser._id);
     }
 }
 
