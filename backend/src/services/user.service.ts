@@ -1,12 +1,33 @@
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IUser } from "../interfaces/user.interface";
+import { IUser, IUserQuery } from "../interfaces/user.interface";
 import { doctorRepository } from "../repositories/doctor.repository";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
-    public async getAll(): Promise<IUser[]> {
-        return await userRepository.getAll();
+    public async getAll(query: IUserQuery): Promise<{
+        users: IUser[];
+        pageSize?: number;
+        page?: number;
+        totalPages?: number;
+        total: number;
+    }> {
+        const allowedSortFields = [
+            "name",
+            "surname",
+            "age",
+            "email",
+            "createdAt",
+        ];
+
+        if (query.sort && !allowedSortFields.includes(query.sort)) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "Invalid sort value",
+            );
+        }
+
+        return await userRepository.getAll(query);
     }
 
     public async getById(id: string): Promise<IUser> {

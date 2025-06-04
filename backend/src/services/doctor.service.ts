@@ -1,13 +1,39 @@
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IDoctor, IDoctorUpdateDTO } from "../interfaces/doctor.interface";
+import {
+    IDoctor,
+    IDoctorQuery,
+    IDoctorUpdateDTO,
+} from "../interfaces/doctor.interface";
 import { doctorRepository } from "../repositories/doctor.repository";
 import { adminService } from "./admin.service";
 import { syncRelationsService } from "./sync-relations.service";
 
 class DoctorService {
-    public async getAll(): Promise<IDoctor[]> {
-        return await doctorRepository.getAll();
+    public async getAll(query: IDoctorQuery): Promise<{
+        doctors: IDoctor[];
+        pageSize?: number;
+        page?: number;
+        totalPages?: number;
+        total: number;
+    }> {
+        const allowedSortFields = [
+            "name",
+            "surname",
+            "age",
+            "email",
+            "createdAt",
+            "phoneNumber",
+        ];
+
+        if (query.sort && !allowedSortFields.includes(query.sort)) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "Invalid sort value",
+            );
+        }
+
+        return await doctorRepository.getAll(query);
     }
 
     public async getById(id: string): Promise<IDoctor> {

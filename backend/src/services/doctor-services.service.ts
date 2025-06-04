@@ -7,7 +7,6 @@ import { IService } from "../interfaces/service.interface";
 import { Doctor } from "../models/doctor.model";
 import { Service } from "../models/service.model";
 import { doctorServicesRepository } from "../repositories/doctor-services.repository";
-import { checkServicesExistAndReturnId } from "../utils/check-services";
 
 class DoctorServicesService {
     public async getAll(): Promise<IService[]> {
@@ -62,13 +61,6 @@ class DoctorServicesService {
 
     public async delete(id: string): Promise<void> {
         return await doctorServicesRepository.delete(id);
-    }
-
-    public async checkServicesExist(
-        names: string[] | string,
-    ): Promise<mongoose.Types.ObjectId[]> {
-        const { servicesId } = await checkServicesExistAndReturnId(names);
-        return servicesId;
     }
 
     public async checkServiceOrCreate(serviceName: string): Promise<ObjectId> {

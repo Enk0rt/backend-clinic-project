@@ -1,7 +1,6 @@
 import { model, Schema } from "mongoose";
 
 import { IDoctor } from "../interfaces/doctor.interface";
-import { Clinic } from "./clinic.model";
 
 const doctorSchema = new Schema(
     {
@@ -17,17 +16,6 @@ const doctorSchema = new Schema(
         toJSON: { virtuals: true, transform: transformDoctor },
     },
 );
-
-function flattenUserInfo<
-    T extends { userInfo?: Record<string, any>; _id?: string },
->(doc: unknown, ret: T): T {
-    if (ret.userInfo && typeof ret.userInfo === "object") {
-        Object.assign(ret, ret.userInfo);
-        delete ret.userInfo;
-        delete ret._id;
-    }
-    return ret;
-}
 
 function transformDoctor(doc: any, ret: any) {
     if (ret.services && Array.isArray(ret.services)) {
@@ -49,25 +37,7 @@ function transformDoctor(doc: any, ret: any) {
                 : clinic,
         );
     }
-    return flattenUserInfo(doc, ret);
+    return ret;
 }
-
-doctorSchema.post("save", async function (doc: IDoctor, next) {
-    const clinics = doc;
-
-    if (Array.isArray(clinics) && clinics.length > 0) {
-        await Promise.all(
-            clinics.map(async (clinicId: any) => {
-                await Clinic.findByIdAndUpdate(
-                    clinicId,
-                    { $addToSet: { doctors: doc._id } },
-                    { new: true },
-                );
-            }),
-        );
-    }
-
-    next();
-});
 
 export const Doctor = model<IDoctor>("doctor", doctorSchema);

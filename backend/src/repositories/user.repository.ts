@@ -1,9 +1,52 @@
-import { IUser, IUserCreateDTO } from "../interfaces/user.interface";
+import { FilterQuery, SortOrder } from "mongoose";
+
+import {
+    IUser,
+    IUserCreateDTO,
+    IUserQuery,
+} from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 
 class UserRepository {
-    public getAll(): Promise<IUser[]> {
-        return User.find();
+    public async getAll(query: IUserQuery): Promise<{
+        users: IUser[];
+        pageSize: number;
+        page: number;
+        totalPages: number;
+        total: number;
+    }> {
+        const page = Number(query.page) > 0 ? Number(query.page) : 1;
+        const pageSize = Number(query.pageSize);
+        const skip = query.pageSize * (query.page - 1);
+        const filteredObject: FilterQuery<IUser> = { isDeleted: false };
+        if (query.search) {
+            const regex = new RegExp(`.*${query.search}.*`, "i");
+            filteredObject.$or = [
+                { name: { $regex: regex } },
+                { surname: { $regex: regex } },
+            ];
+        }
+        const sortDirection: SortOrder =
+            Number(query.sortDirection) === -1 || query.sortDirection === "desc"
+                ? -1
+                : 1;
+
+        const [users, total] = await Promise.all([
+            User.find(filteredObject)
+                .limit(query.pageSize)
+                .skip(skip)
+                .sort({ [query.sort]: sortDirection }),
+            User.find(filteredObject).countDocuments(),
+        ]);
+
+        const totalPages = pageSize
+            ? Math.ceil(total / query.pageSize)
+            : undefined;
+        return {
+            users,
+            total,
+            ...(pageSize && { pageSize, page, totalPages }),
+        };
     }
 
     public getById(id: string): Promise<IUser> {

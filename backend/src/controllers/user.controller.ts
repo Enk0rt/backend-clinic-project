@@ -2,18 +2,31 @@ import { NextFunction, Request, Response } from "express";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
-import { IUser, IUserUpdateDTO } from "../interfaces/user.interface";
+import {
+    IUser,
+    IUserListResponse,
+    IUserQuery,
+    IUserUpdateDTO,
+} from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
 class UserController {
     public async getAll(
         req: Request,
-        res: Response<IApiSuccessResponse<{ users: IUser[] }>>,
+        res: Response<IUserListResponse>,
         next: NextFunction,
     ) {
         try {
-            const users = await userService.getAll();
-            res.status(StatusCodeEnums.OK).json({ data: { users: users } });
+            const query = req.query as any as IUserQuery;
+            const { users, total, page, pageSize, totalPages } =
+                await userService.getAll(query);
+            res.status(StatusCodeEnums.OK).json({
+                data: users,
+                pageSize: pageSize,
+                page: page,
+                totalPages,
+                total: total,
+            });
         } catch (e) {
             next(e);
         }

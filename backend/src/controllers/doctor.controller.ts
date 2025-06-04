@@ -2,7 +2,12 @@ import { NextFunction, Request, Response } from "express";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
-import { IDoctor, IDoctorUpdateDTO } from "../interfaces/doctor.interface";
+import {
+    IDoctor,
+    IDoctorListResponse,
+    IDoctorQuery,
+    IDoctorUpdateDTO,
+} from "../interfaces/doctor.interface";
 import { IUserUpdateDTO } from "../interfaces/user.interface";
 import { adminService } from "../services/admin.service";
 import { doctorService } from "../services/doctor.service";
@@ -11,12 +16,20 @@ import { userService } from "../services/user.service";
 class DoctorController {
     public async getAll(
         req: Request,
-        res: Response<IApiSuccessResponse<{ doctors: IDoctor[] }>>,
+        res: Response<IDoctorListResponse>,
         next: NextFunction,
     ) {
         try {
-            const doctors = await doctorService.getAll();
-            res.status(StatusCodeEnums.OK).json({ data: { doctors: doctors } });
+            const query = req.query as any as IDoctorQuery;
+            const { doctors, total, totalPages, page, pageSize } =
+                await doctorService.getAll(query);
+            res.status(StatusCodeEnums.OK).json({
+                data: doctors,
+                pageSize: pageSize,
+                page: page,
+                totalPages,
+                total,
+            });
         } catch (e) {
             next(e);
         }

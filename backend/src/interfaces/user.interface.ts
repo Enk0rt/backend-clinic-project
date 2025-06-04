@@ -1,4 +1,5 @@
 import { RoleEnums } from "../enums/role.enums";
+import { IApiSuccessResponse } from "./api-success-response.interface";
 import { BaseInterface } from "./base.interface";
 
 export interface IUser extends BaseInterface {
@@ -12,6 +13,21 @@ export interface IUser extends BaseInterface {
     isDeleted: boolean;
     isVerified: boolean;
     role: RoleEnums;
+}
+
+export interface IUserQuery {
+    pageSize: number;
+    page: number;
+    search?: string;
+    sort?: string;
+    sortDirection?: "asc" | "desc" | 1 | -1;
+}
+
+export interface IUserListResponse extends IApiSuccessResponse<IUser[]> {
+    page: number;
+    pageSize: number;
+    totalPages: number;
+    total: number;
 }
 
 export type IUserUpdateDTO = Pick<IUser, "name" | "surname" | "age">;
