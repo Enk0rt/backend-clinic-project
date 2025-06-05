@@ -4,17 +4,12 @@ import {
     IUser,
     IUserCreateDTO,
     IUserQuery,
+    IUserResponse,
 } from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 
 class UserRepository {
-    public async getAll(query: IUserQuery): Promise<{
-        users: IUser[];
-        pageSize: number;
-        page: number;
-        totalPages: number;
-        total: number;
-    }> {
+    public async getAll(query: IUserQuery): Promise<IUserResponse> {
         const page = Number(query.page) > 0 ? Number(query.page) : 1;
         const pageSize = Number(query.pageSize);
         const skip = query.pageSize * (query.page - 1);
@@ -44,7 +39,7 @@ class UserRepository {
             ? Math.ceil(total / query.pageSize)
             : undefined;
         return {
-            users,
+            data: users,
             total,
             ...(pageSize && { pageSize, page, totalPages }),
         };

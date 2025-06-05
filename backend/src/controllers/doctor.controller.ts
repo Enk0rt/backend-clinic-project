@@ -4,7 +4,6 @@ import { StatusCodeEnums } from "../enums/status-code.enums";
 import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
 import {
     IDoctor,
-    IDoctorListResponse,
     IDoctorQuery,
     IDoctorUpdateDTO,
 } from "../interfaces/doctor.interface";
@@ -16,15 +15,15 @@ import { userService } from "../services/user.service";
 class DoctorController {
     public async getAll(
         req: Request,
-        res: Response<IDoctorListResponse>,
+        res: Response<IApiSuccessResponse<IDoctor[]>>,
         next: NextFunction,
     ) {
         try {
-            const query = req.query as any as IDoctorQuery;
-            const { doctors, total, totalPages, page, pageSize } =
+            const query = req.query as IDoctorQuery;
+            const { data, total, totalPages, page, pageSize } =
                 await doctorService.getAll(query);
             res.status(StatusCodeEnums.OK).json({
-                data: doctors,
+                data,
                 pageSize,
                 page,
                 totalPages,

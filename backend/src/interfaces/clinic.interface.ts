@@ -11,6 +11,22 @@ export interface IClinic extends BaseInterface {
     services: ObjectId[];
 }
 
+export interface IClinicQuery {
+    pageSize?: number;
+    page?: number;
+    sort?: string;
+    search?: string;
+    sortDirection?: "desc" | "asc" | 1 | -1;
+}
+
+export interface IClinicResponse {
+    data: IClinic[];
+    pageSize: number;
+    page: number;
+    totalPages: number;
+    total: number;
+}
+
 export type IClinicDTO = Pick<
     IClinic,
     "name" | "city" | "address" | "doctors" | "services"

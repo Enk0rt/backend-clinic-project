@@ -4,7 +4,6 @@ import { StatusCodeEnums } from "../enums/status-code.enums";
 import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
 import {
     IUser,
-    IUserListResponse,
     IUserQuery,
     IUserUpdateDTO,
 } from "../interfaces/user.interface";
@@ -13,15 +12,15 @@ import { userService } from "../services/user.service";
 class UserController {
     public async getAll(
         req: Request,
-        res: Response<IUserListResponse>,
+        res: Response<IApiSuccessResponse<IUser[]>>,
         next: NextFunction,
     ) {
         try {
-            const query = req.query as any as IUserQuery;
-            const { users, total, page, pageSize, totalPages } =
+            const query = req.query as IUserQuery;
+            const { data, total, page, pageSize, totalPages } =
                 await userService.getAll(query);
             res.status(StatusCodeEnums.OK).json({
-                data: users,
+                data,
                 pageSize,
                 page,
                 totalPages,

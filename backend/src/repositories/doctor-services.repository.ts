@@ -1,17 +1,15 @@
 import { ObjectId } from "mongodb";
 import { FilterQuery, SortOrder } from "mongoose";
 
-import { IService, IServiceQuery } from "../interfaces/service.interface";
+import {
+    IService,
+    IServiceQuery,
+    IServiceResponse,
+} from "../interfaces/service.interface";
 import { Service } from "../models/service.model";
 
 class DoctorServicesRepository {
-    public async getAll(query: IServiceQuery): Promise<{
-        services: IService[];
-        pageSize: number;
-        page: number;
-        totalPages: number;
-        total: number;
-    }> {
+    public async getAll(query: IServiceQuery): Promise<IServiceResponse> {
         const page = Number(query.page);
         const pageSize = Number(query.pageSize);
         const skip = pageSize * (page - 1);
@@ -45,7 +43,7 @@ class DoctorServicesRepository {
         ]);
         const totalPages = pageSize ? Math.ceil(total / pageSize) : undefined;
         return {
-            services,
+            data: services,
             total,
             ...(pageSize && { pageSize, page, totalPages }),
         };

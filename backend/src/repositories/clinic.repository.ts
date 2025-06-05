@@ -1,17 +1,50 @@
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
-import { IClinic, IClinicDTO } from "../interfaces/clinic.interface";
+import {
+    IClinic,
+    IClinicDTO,
+    IClinicQuery,
+    IClinicResponse,
+} from "../interfaces/clinic.interface";
 import { Clinic } from "../models/clinic.model";
 
 class ClinicRepository {
-    public getAll(): Promise<IClinic[]> {
-        return Clinic.find()
-            .populate({
-                path: "doctors",
-                select: "phoneNumber id",
-                populate: { path: "userInfo", select: "name surname age" },
-            })
-            .populate({ path: "services", select: "name" });
+    public async getAll(query: IClinicQuery): Promise<IClinicResponse> {
+        const page = Number(query.page);
+        const pageSize = Number(query.pageSize);
+        const skip = pageSize * (page - 1);
+
+        const filterObject: FilterQuery<IClinic> = {};
+
+        if (query.search) {
+            const regex = new RegExp(`.*${query.search}.*`, "i");
+            filterObject.$or = [{ name: { $regex: regex } }];
+        }
+
+        const sortDirection =
+            query.sortDirection === "desc" || Number(query.sortDirection) === -1
+                ? -1
+                : 1;
+
+        const [clinics, total] = await Promise.all([
+            Clinic.find(filterObject)
+                .limit(pageSize)
+                .skip(skip)
+                .sort({ [query.sort]: sortDirection })
+                .populate({
+                    path: "doctors",
+                    select: "phoneNumber id",
+                    populate: { path: "userInfo", select: "name surname age" },
+                })
+                .populate({ path: "services", select: "name" }),
+            Clinic.find(filterObject).countDocuments(),
+        ]);
+        const totalPages = Math.ceil(total / pageSize);
+        return {
+            data: clinics,
+            total,
+            ...(pageSize && { pageSize, page, totalPages }),
+        };
     }
 
     public getById(id: string): Promise<IClinic> {

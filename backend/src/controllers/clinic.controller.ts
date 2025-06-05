@@ -1,14 +1,31 @@
 import { NextFunction, Request, Response } from "express";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
-import { IClinicDTO } from "../interfaces/clinic.interface";
+import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
+import {
+    IClinic,
+    IClinicDTO,
+    IClinicQuery,
+} from "../interfaces/clinic.interface";
 import { clinicService } from "../services/clinic.service";
 
 class ClinicController {
-    public async getAll(req: Request, res: Response, next: NextFunction) {
+    public async getAll(
+        req: Request,
+        res: Response<IApiSuccessResponse<IClinic[]>>,
+        next: NextFunction,
+    ) {
         try {
-            const clinics = await clinicService.getAll();
-            res.status(StatusCodeEnums.OK).json(clinics);
+            const query = req.query as IClinicQuery;
+            const { data, page, pageSize, totalPages, total } =
+                await clinicService.getAll(query);
+            res.status(StatusCodeEnums.OK).json({
+                data,
+                pageSize,
+                page,
+                totalPages,
+                total,
+            });
         } catch (e) {
             next(e);
         }

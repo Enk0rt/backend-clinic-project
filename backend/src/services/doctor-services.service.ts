@@ -3,19 +3,17 @@ import * as mongoose from "mongoose";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IService, IServiceQuery } from "../interfaces/service.interface";
+import {
+    IService,
+    IServiceQuery,
+    IServiceResponse,
+} from "../interfaces/service.interface";
 import { Doctor } from "../models/doctor.model";
 import { Service } from "../models/service.model";
 import { doctorServicesRepository } from "../repositories/doctor-services.repository";
 
 class DoctorServicesService {
-    public async getAll(query: IServiceQuery): Promise<{
-        services: IService[];
-        pageSize: number;
-        page: number;
-        totalPages: number;
-        total: number;
-    }> {
+    public async getAll(query: IServiceQuery): Promise<IServiceResponse> {
         const allowedSortNames = ["name"];
 
         if (query.sort && !allowedSortNames.includes(query.sort)) {

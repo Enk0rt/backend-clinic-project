@@ -1,17 +1,11 @@
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IUser, IUserQuery } from "../interfaces/user.interface";
+import { IUser, IUserQuery, IUserResponse } from "../interfaces/user.interface";
 import { doctorRepository } from "../repositories/doctor.repository";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
-    public async getAll(query: IUserQuery): Promise<{
-        users: IUser[];
-        pageSize?: number;
-        page?: number;
-        totalPages?: number;
-        total: number;
-    }> {
+    public async getAll(query: IUserQuery): Promise<IUserResponse> {
         const allowedSortFields = [
             "name",
             "surname",

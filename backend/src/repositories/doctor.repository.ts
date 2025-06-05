@@ -1,16 +1,14 @@
 import { FilterQuery, SortOrder } from "mongoose";
 
-import { IDoctor, IDoctorQuery } from "../interfaces/doctor.interface";
+import {
+    IDoctor,
+    IDoctorQuery,
+    IDoctorResponse,
+} from "../interfaces/doctor.interface";
 import { Doctor } from "../models/doctor.model";
 
 class DoctorRepository {
-    public async getAll(query: IDoctorQuery): Promise<{
-        doctors: IDoctor[];
-        total: number;
-        pageSize?: number;
-        page?: number;
-        totalPages?: number;
-    }> {
+    public async getAll(query: IDoctorQuery): Promise<IDoctorResponse> {
         const filter: FilterQuery<IDoctor> = {};
 
         if (query.search) {
@@ -87,7 +85,7 @@ class DoctorRepository {
         const totalPages = pageSize ? Math.ceil(total / pageSize) : undefined;
 
         return {
-            doctors,
+            data: doctors,
             total,
             ...(pageSize && { pageSize, page, totalPages }),
         };

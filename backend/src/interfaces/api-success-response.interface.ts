@@ -4,4 +4,5 @@ export interface IApiSuccessResponse<T = any> {
     pageSize?: number;
     page?: number;
     total?: number;
+    totalPages?: number;
 }

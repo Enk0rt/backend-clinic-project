@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 
-import { IApiSuccessResponse } from "./api-success-response.interface";
 import { BaseInterface } from "./base.interface";
 
 export interface IService extends BaseInterface {
@@ -11,16 +10,17 @@ export interface IService extends BaseInterface {
 }
 
 export interface IServiceQuery {
-    pageSize: number;
-    page: number;
+    pageSize?: number;
+    page?: number;
     search?: string;
     sort?: string;
     sortDirection?: "asc" | "desc" | 1 | -1;
 }
 
-export interface IServiceListResponse extends IApiSuccessResponse<IService[]> {
-    page: number;
+export interface IServiceResponse {
+    data: IService[];
     pageSize: number;
+    page: number;
     totalPages: number;
     total: number;
 }

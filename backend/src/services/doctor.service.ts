@@ -3,6 +3,7 @@ import { ApiError } from "../errors/api.error";
 import {
     IDoctor,
     IDoctorQuery,
+    IDoctorResponse,
     IDoctorUpdateDTO,
 } from "../interfaces/doctor.interface";
 import { doctorRepository } from "../repositories/doctor.repository";
@@ -10,13 +11,7 @@ import { adminService } from "./admin.service";
 import { syncRelationsService } from "./sync-relations.service";
 
 class DoctorService {
-    public async getAll(query: IDoctorQuery): Promise<{
-        doctors: IDoctor[];
-        pageSize?: number;
-        page?: number;
-        totalPages?: number;
-        total: number;
-    }> {
+    public async getAll(query: IDoctorQuery): Promise<IDoctorResponse> {
         const allowedSortFields = [
             "name",
             "surname",

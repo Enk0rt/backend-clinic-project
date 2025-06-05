@@ -3,14 +3,26 @@ import mongoose from "mongoose";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";
-import { IClinic, IClinicDTO } from "../interfaces/clinic.interface";
+import {
+    IClinic,
+    IClinicDTO,
+    IClinicQuery,
+    IClinicResponse,
+} from "../interfaces/clinic.interface";
 import { Clinic } from "../models/clinic.model";
 import { Doctor } from "../models/doctor.model";
 import { clinicRepository } from "../repositories/clinic.repository";
 
 class ClinicService {
-    public async getAll(): Promise<IClinic[]> {
-        return await clinicRepository.getAll();
+    public async getAll(query: IClinicQuery): Promise<IClinicResponse> {
+        const allowedSortNames = ["name,city,address"];
+        if (query.sort && !allowedSortNames.includes(query.sort)) {
+            throw new ApiError(
+                StatusCodeEnums.BAD_REQUEST,
+                "Invalid sort value",
+            );
+        }
+        return await clinicRepository.getAll(query);
     }
 
     public async getById(id: string): Promise<IClinic> {
