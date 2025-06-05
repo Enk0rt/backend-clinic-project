@@ -3,6 +3,8 @@ import { zod } from "../zod";
 
 export class AuthValidator {
     private static refresh = zod.string().trim();
+    private static validate = zod.string().trim();
+    private static recovery = zod.string().trim();
     private static email = zod.string().regex(new RegExp(RegexEnums.EMAIL), {
         message: "Email does not match required pattern",
     });
@@ -26,6 +28,12 @@ export class AuthValidator {
 
     public static refreshToken = zod.object({
         refreshToken: this.refresh,
+    });
+    public static validateToken = zod.object({
+        refreshToken: this.validate,
+    });
+    public static recoveryToken = zod.object({
+        refreshToken: this.recovery,
     });
 
     public static validateEmail = zod.object({

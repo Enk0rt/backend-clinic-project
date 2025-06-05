@@ -27,42 +27,62 @@ class DoctorServicesController {
         }
     }
 
-    public async getById(req: Request, res: Response, next: NextFunction) {
+    public async getById(
+        req: Request,
+        res: Response<IApiSuccessResponse<IService>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
-            const services = await doctorServicesService.getById(id);
-            res.status(StatusCodeEnums.OK).json(services);
+            const data = await doctorServicesService.getById(id);
+            res.status(StatusCodeEnums.OK).json({ data });
         } catch (e) {
             next(e);
         }
     }
 
-    public async create(req: Request, res: Response, next: NextFunction) {
+    public async create(
+        req: Request,
+        res: Response<IApiSuccessResponse<IService>>,
+        next: NextFunction,
+    ) {
         try {
-            const data = req.body;
-            const service = await doctorServicesService.create(data);
-            res.status(StatusCodeEnums.OK).json(service);
+            const createData = req.body as Partial<IService>;
+            const data = await doctorServicesService.create(createData);
+            res.status(StatusCodeEnums.OK).json({ data });
         } catch (e) {
             next(e);
         }
     }
 
-    public async updateById(req: Request, res: Response, next: NextFunction) {
+    public async updateById(
+        req: Request,
+        res: Response<IApiSuccessResponse<IService>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
-            const data = req.body;
-            const service = await doctorServicesService.updateById(id, data);
-            res.status(StatusCodeEnums.OK).json(service);
+            const dataToUpdate = req.body;
+            const data = await doctorServicesService.updateById(
+                id,
+                dataToUpdate,
+            );
+            res.status(StatusCodeEnums.OK).json({ data });
         } catch (e) {
             next(e);
         }
     }
 
-    public async deleteById(req: Request, res: Response, next: NextFunction) {
+    public async deleteById(
+        req: Request,
+        res: Response<IApiSuccessResponse<void | null>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
             await doctorServicesService.delete(id);
             res.status(StatusCodeEnums.OK).json({
+                data: null,
                 details: "Service is deleted successfully",
             });
         } catch (e) {

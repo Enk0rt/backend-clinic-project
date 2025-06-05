@@ -25,7 +25,8 @@ class DoctorServicesRepository {
             Number(query.sortDirection) === -1 || query.sortDirection === "desc"
                 ? -1
                 : 1;
-        const [services, total] = await Promise.all([
+
+        const [data, total] = await Promise.all([
             Service.find(filterObject)
                 .limit(pageSize)
                 .skip(skip)
@@ -41,9 +42,11 @@ class DoctorServicesRepository {
                 .populate({ path: "clinics", select: "name city address" }),
             Service.find(filterObject).countDocuments(),
         ]);
+
         const totalPages = pageSize ? Math.ceil(total / pageSize) : undefined;
+
         return {
-            data: services,
+            data,
             total,
             ...(pageSize && { pageSize, page, totalPages }),
         };
@@ -62,31 +65,8 @@ class DoctorServicesRepository {
             .populate({ path: "clinics", select: "name city address" });
     }
 
-    public getByNames(names: string[]): Promise<IService[]> {
-        const regexes = names.map((name) => new RegExp(`^${name}$`, "i"));
-        return Service.find({ name: { $in: regexes } })
-            .populate({
-                path: "doctors",
-                select: "phoneNumber",
-                populate: {
-                    path: "userInfo",
-                    select: "name surname age phoneNumber",
-                },
-            })
-            .populate({ path: "clinics", select: "name city address" });
-    }
-
     public getByName(name: string): Promise<IService> {
-        return Service.findOne({ name })
-            .populate({
-                path: "doctors",
-                select: "phoneNumber",
-                populate: {
-                    path: "userInfo",
-                    select: "name surname age phoneNumber",
-                },
-            })
-            .populate({ path: "clinics", select: "name city address" });
+        return Service.findOne({ name });
     }
 
     public create(data: Partial<IService>): Promise<IService> {

@@ -5,12 +5,12 @@ import { BaseInterface } from "./base.interface";
 export interface IDoctor extends BaseInterface {
     _id: string;
     userInfo: string;
-    phoneNumber: string;
     services: ObjectId[];
     clinics: ObjectId[];
 }
 
 export interface IDoctorCreateByAdminDTO {
+    _id: string;
     name: string;
     surname: string;
     age: number;
@@ -38,12 +38,6 @@ export interface IDoctorResponse {
 }
 
 export interface IDoctorUpdateDTO {
-    phoneNumber?: string;
     services?: string[] | string;
     clinics?: string[] | string;
 }
-
-export type IDoctorDTO = Pick<
-    IDoctor,
-    "_id" | "userInfo" | "phoneNumber" | "services" | "clinics"
->;

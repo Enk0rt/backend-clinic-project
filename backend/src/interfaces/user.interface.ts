@@ -8,6 +8,7 @@ export interface IUser extends BaseInterface {
     name: string;
     surname: string;
     age: number;
+    phoneNumber: string;
     isActive: boolean;
     isDeleted: boolean;
     isVerified: boolean;
@@ -30,9 +31,12 @@ export interface IUserResponse {
     totalPages: number;
 }
 
-export type IUserUpdateDTO = Pick<IUser, "name" | "surname" | "age">;
+export type IUserUpdateDTO = Pick<
+    IUser,
+    "name" | "surname" | "age" | "phoneNumber"
+>;
 
 export type IUserCreateDTO = Pick<
     IUser,
-    "name" | "surname" | "age" | "email" | "password"
+    "name" | "surname" | "age" | "email" | "password" | "phoneNumber"
 >;

@@ -31,22 +31,30 @@ class ClinicController {
         }
     }
 
-    public async getById(req: Request, res: Response, next: NextFunction) {
+    public async getById(
+        req: Request,
+        res: Response<IApiSuccessResponse<IClinic>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
-            const clinics = await clinicService.getById(id);
-            res.status(StatusCodeEnums.OK).json(clinics);
+            const data = await clinicService.getById(id);
+            res.status(StatusCodeEnums.OK).json({ data });
         } catch (e) {
             next(e);
         }
     }
 
-    public async create(req: Request, res: Response, next: NextFunction) {
+    public async create(
+        req: Request,
+        res: Response<IApiSuccessResponse<IClinic>>,
+        next: NextFunction,
+    ) {
         try {
-            const clinicData = req.body as IClinicDTO;
-            const clinic = await clinicService.create(clinicData);
+            const createData = req.body as IClinicDTO;
+            const data = await clinicService.create(createData);
             res.status(StatusCodeEnums.CREATED).json({
-                clinic: clinic,
+                data,
                 details: "New Clinic is created successfully",
             });
         } catch (e) {
@@ -54,16 +62,17 @@ class ClinicController {
         }
     }
 
-    public async updateById(req: Request, res: Response, next: NextFunction) {
+    public async updateById(
+        req: Request,
+        res: Response<IApiSuccessResponse<IClinic>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
-            const clinicData = req.body as IClinicDTO;
-            const updatedClinic = await clinicService.updateById(
-                id,
-                clinicData,
-            );
+            const dataToUpdate = req.body as IClinicDTO;
+            const data = await clinicService.updateById(id, dataToUpdate);
             res.status(StatusCodeEnums.OK).json({
-                clinic: updatedClinic,
+                data,
                 details: "Clinic info is updated successfully",
             });
         } catch (e) {
@@ -71,11 +80,16 @@ class ClinicController {
         }
     }
 
-    public async deleteById(req: Request, res: Response, next: NextFunction) {
+    public async deleteById(
+        req: Request,
+        res: Response<IApiSuccessResponse<void | null>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
             await clinicService.delete(id);
             res.status(StatusCodeEnums.OK).json({
+                data: null,
                 details: "Clinic is deleted successfully",
             });
         } catch (e) {

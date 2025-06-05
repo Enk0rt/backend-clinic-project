@@ -27,7 +27,7 @@ class UserRepository {
                 ? -1
                 : 1;
 
-        const [users, total] = await Promise.all([
+        const [data, total] = await Promise.all([
             User.find(filteredObject)
                 .limit(pageSize)
                 .skip(skip)
@@ -39,7 +39,7 @@ class UserRepository {
             ? Math.ceil(total / query.pageSize)
             : undefined;
         return {
-            data: users,
+            data,
             total,
             ...(pageSize && { pageSize, page, totalPages }),
         };

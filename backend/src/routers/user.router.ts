@@ -17,24 +17,24 @@ router.get(
 );
 router.get(
     "/:id",
-    commonMiddleware.isValidated("id"),
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    commonMiddleware.isValidated("id"),
     userController.getById,
 );
 router.put(
     "/:id",
-    commonMiddleware.isValidated("id"),
-    commonMiddleware.validateBody(UserValidator.update),
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    commonMiddleware.isValidated("id"),
+    commonMiddleware.validateBody(UserValidator.updateUser),
     userController.updateById,
 );
 router.delete(
     "/:id",
-    commonMiddleware.isValidated("id"),
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    commonMiddleware.isValidated("id"),
     userController.delete,
 );
 

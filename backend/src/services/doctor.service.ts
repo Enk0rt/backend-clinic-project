@@ -44,10 +44,6 @@ class DoctorService {
             update.services,
             update.clinics,
         );
-
-        await doctorRepository.updateById(id, {
-            phoneNumber: update.phoneNumber,
-        });
         return await doctorRepository.getById(id);
     }
 

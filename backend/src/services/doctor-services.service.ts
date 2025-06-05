@@ -43,10 +43,6 @@ class DoctorServicesService {
         return await doctorServicesRepository.getByName(name);
     }
 
-    public async getByNames(names: string[]): Promise<IService[]> {
-        return await doctorServicesRepository.getByNames(names);
-    }
-
     public async create(data: Partial<IService>): Promise<IService> {
         const isExist = await doctorServicesRepository.getByName(data.name);
         if (isExist) {
@@ -79,7 +75,7 @@ class DoctorServicesService {
     public async checkServiceOrCreate(serviceName: string): Promise<ObjectId> {
         let service = await this.getByName(serviceName);
         if (!service) {
-            service = await this.create({
+            service = await doctorServicesRepository.create({
                 name: serviceName,
                 doctors: [],
                 clinics: [],

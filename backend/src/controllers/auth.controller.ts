@@ -139,9 +139,9 @@ class AuthController {
     ) {
         try {
             const { id } = req.params;
-            const user = await authService.verifyRequest(id);
+            const verifyToken = await authService.verifyRequest(id);
             res.status(StatusCodeEnums.OK).json({
-                data: user,
+                data: verifyToken,
                 details:
                     "New verify token is created successfully. Check your email!",
             });

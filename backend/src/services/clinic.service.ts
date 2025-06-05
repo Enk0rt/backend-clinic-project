@@ -38,18 +38,6 @@ class ClinicService {
         return clinic;
     }
 
-    public async getByNames(names: string[]): Promise<IClinic[]> {
-        const clinic = await clinicRepository.getByNames(names);
-
-        if (!clinic) {
-            throw new ApiError(
-                StatusCodeEnums.NOT_FOUND,
-                "Clinic is not found",
-            );
-        }
-        return clinic;
-    }
-
     public async getByName(name: string): Promise<IClinic> {
         const clinic = await clinicRepository.getByName(name);
 

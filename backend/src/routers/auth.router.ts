@@ -10,7 +10,7 @@ const router = Router();
 
 router.post(
     "/sign-up",
-    commonMiddleware.validateBody(UserValidator.create),
+    commonMiddleware.validateBody(UserValidator.createUser),
     authController.signUp,
 );
 router.post(
@@ -39,12 +39,18 @@ router.get("/verify/:token", authController.verify);
 router.post(
     "/verify/:id",
     commonMiddleware.isValidated("id"),
+    commonMiddleware.validateBody(AuthValidator.validateToken),
     authController.verifyRequest,
 );
-router.patch("/verify/:token", authController.verify);
+router.patch(
+    "/verify/:token",
+    commonMiddleware.isValidated("token"),
+    authController.verify,
+);
 
 router.patch(
     "/recovery/:token",
+    commonMiddleware.isValidated("token"),
     commonMiddleware.validateBody(AuthValidator.validatePassword),
     authController.recoveryPassword,
 );

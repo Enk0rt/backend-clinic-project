@@ -54,6 +54,7 @@ class AdminService {
             surname: data.surname,
             age: data.age,
             email: data.email,
+            phoneNumber: data.phoneNumber,
             password,
             role: RoleEnums.DOCTOR,
         });
@@ -77,7 +78,6 @@ class AdminService {
         await doctorRepository.create({
             _id: newUser._id,
             userInfo: newUser._id,
-            phoneNumber: data.phoneNumber ?? null,
             services: [],
             clinics: [],
         });

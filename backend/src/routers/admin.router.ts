@@ -10,16 +10,16 @@ const router = Router();
 
 router.post(
     "/:id",
-    commonMiddleware.isValidated("id"),
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    commonMiddleware.isValidated("id"),
     adminController.changeRole,
 );
 router.patch(
     "/deactivate/:id",
-    commonMiddleware.isValidated("id"),
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.ADMIN]),
+    commonMiddleware.isValidated("id"),
     adminController.deactivateUser,
 );
 

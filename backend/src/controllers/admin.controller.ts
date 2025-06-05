@@ -2,11 +2,16 @@ import { NextFunction, Request, Response } from "express";
 
 import { RoleEnums } from "../enums/role.enums";
 import { StatusCodeEnums } from "../enums/status-code.enums";
+import { IApiSuccessResponse } from "../interfaces/api-success-response.interface";
 import { adminService } from "../services/admin.service";
 import { userService } from "../services/user.service";
 
 class AdminController {
-    public async changeRole(req: Request, res: Response, next: NextFunction) {
+    public async changeRole(
+        req: Request,
+        res: Response<IApiSuccessResponse>,
+        next: NextFunction,
+    ) {
         try {
             const { role } = req.body;
             const { id } = req.params;
@@ -43,7 +48,7 @@ class AdminController {
 
     public async deactivateUser(
         req: Request,
-        res: Response,
+        res: Response<IApiSuccessResponse>,
         next: NextFunction,
     ) {
         try {

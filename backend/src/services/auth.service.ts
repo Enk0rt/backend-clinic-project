@@ -20,7 +20,11 @@ class AuthService {
     ): Promise<{ user: IUser; verifyToken: string }> {
         await userService.isEmailUnique(data.email);
         const password = await passwordService.hashPass(data.password);
-        const newUser = await userRepository.create({ ...data, password });
+        const newUser = await userRepository.create({
+            ...data,
+            phoneNumber: data.phoneNumber || null,
+            password,
+        });
 
         const verifyToken = tokenService.generateActionToken(
             {

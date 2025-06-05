@@ -41,8 +41,8 @@ class DoctorController {
     ) {
         try {
             const { id } = req.params;
-            const doctor = await doctorService.getById(id);
-            res.status(StatusCodeEnums.OK).json({ data: doctor });
+            const data = await doctorService.getById(id);
+            res.status(StatusCodeEnums.OK).json({ data });
         } catch (e) {
             next(e);
         }
@@ -56,13 +56,13 @@ class DoctorController {
         try {
             const { id } = req.params;
 
-            const userData = req.body as IUserUpdateDTO;
+            const dataToUpdate = req.body as IUserUpdateDTO;
             const doctorData = req.body as IDoctorUpdateDTO;
-            await userService.updateUser(id, userData);
+            await userService.updateUser(id, dataToUpdate);
 
-            const updatedDoctor = await doctorService.update(id, doctorData);
+            const data = await doctorService.update(id, doctorData);
             res.status(StatusCodeEnums.OK).json({
-                data: updatedDoctor,
+                data,
                 details: "Doctor info is successfully updated",
             });
         } catch (e) {
@@ -70,11 +70,16 @@ class DoctorController {
         }
     }
 
-    public async delete(req: Request, res: Response, next: NextFunction) {
+    public async delete(
+        req: Request,
+        res: Response<IApiSuccessResponse<void | null>>,
+        next: NextFunction,
+    ) {
         try {
             const { id } = req.params;
             await doctorService.delete(id);
             res.status(StatusCodeEnums.OK).json({
+                data: null,
                 details: "Doctor is deleted successfully",
             });
         } catch (e) {
@@ -84,13 +89,13 @@ class DoctorController {
 
     public async createByAdmin(
         req: Request,
-        res: Response,
+        res: Response<IApiSuccessResponse<IDoctor>>,
         next: NextFunction,
     ) {
         try {
-            const doctor = await adminService.createDoctorByAdmin(req.body);
+            const data = await adminService.createDoctorByAdmin(req.body);
             res.status(StatusCodeEnums.CREATED).json({
-                data: { doctor },
+                data,
                 details: "Doctor was created successfully",
             });
         } catch (e) {

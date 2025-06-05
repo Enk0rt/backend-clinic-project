@@ -5,7 +5,6 @@ import { IDoctor } from "../interfaces/doctor.interface";
 const doctorSchema = new Schema(
     {
         userInfo: { type: Schema.Types.ObjectId, ref: "user" },
-        phoneNumber: { type: String, default: null },
         services: [{ type: Schema.Types.ObjectId, ref: "service" }],
         clinics: [{ type: Schema.Types.ObjectId, ref: "clinic" }],
     },
@@ -19,20 +18,30 @@ const doctorSchema = new Schema(
 
 function transformDoctor(doc: any, ret: any) {
     if (ret.userInfo && typeof ret.userInfo === "object") {
-        delete ret.userInfo._id;
+        const { name, surname, age, phoneNumber, email, createdAt, updatedAt } =
+            ret.userInfo;
+        ret.userInfo = {
+            name,
+            surname,
+            age,
+            phoneNumber,
+            email,
+            createdAt,
+            updatedAt,
+        };
     }
 
-    if (Array.isArray(ret.services)) {
+    if (ret.services && Array.isArray(ret.services)) {
         ret.services = ret.services.map((service: any) =>
-            service && typeof service === "object" && "name" in service
+            typeof service === "object" && service !== null
                 ? service.name
                 : service,
         );
     }
 
-    if (Array.isArray(ret.clinics)) {
+    if (ret.clinics && Array.isArray(ret.clinics)) {
         ret.clinics = ret.clinics.map((clinic: any) =>
-            clinic && typeof clinic === "object" && "name" in clinic
+            typeof clinic === "object" && clinic !== null
                 ? {
                       name: clinic.name,
                       city: clinic.city,

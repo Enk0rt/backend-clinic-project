@@ -33,13 +33,13 @@ class UserController {
 
     public async getById(
         req: Request,
-        res: Response<IApiSuccessResponse<{ user: IUser }>>,
+        res: Response<IApiSuccessResponse<IUser>>,
         next: NextFunction,
     ) {
         try {
             const { id } = req.params;
-            const user = await userService.getById(id);
-            res.status(StatusCodeEnums.OK).json({ data: { user: user } });
+            const data = await userService.getById(id);
+            res.status(StatusCodeEnums.OK).json({ data });
         } catch (e) {
             next(e);
         }
@@ -47,18 +47,16 @@ class UserController {
 
     public async updateById(
         req: Request,
-        res: Response<IApiSuccessResponse<{ user: IUser }>>,
+        res: Response<IApiSuccessResponse<IUser>>,
         next: NextFunction,
     ) {
         try {
             const { id } = req.params;
-            const userData = req.body as IUserUpdateDTO;
+            const dataToUpdate = req.body as IUserUpdateDTO;
 
-            const updatedUser = await userService.updateUser(id, {
-                ...userData,
-            });
+            const data = await userService.updateUser(id, dataToUpdate);
             res.status(StatusCodeEnums.OK).json({
-                data: { user: updatedUser },
+                data,
                 details: "User info is successfully updated",
             });
         } catch (e) {
