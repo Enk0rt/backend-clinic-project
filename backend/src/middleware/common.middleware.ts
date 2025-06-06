@@ -22,6 +22,15 @@ class CommonMiddleware {
 
     public validateBody(schema: ZodSchema<any>) {
         return async (req: Request, res: Response, next: NextFunction) => {
+            if (!req.body) {
+                return next(
+                    new ApiError(
+                        400,
+                        "At least one field must be provided to update",
+                    ),
+                );
+            }
+
             const result = schema.safeParse(req.body);
 
             if (!result.success) {

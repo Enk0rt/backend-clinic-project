@@ -17,10 +17,12 @@ class ClinicRepository {
 
         const filterObject: FilterQuery<IClinic> = {};
 
+        const regex = new RegExp(`.*${query.search}.*`, "i");
         if (query.search) {
-            const regex = new RegExp(`.*${query.search}.*`, "i");
             filterObject.$or = [
                 { name: { $regex: regex } },
+                { city: { $regex: regex } },
+                { address: { $regex: regex } },
                 { "services.name": { $regex: regex } },
                 { "doctors.userInfo.name": { $regex: regex } },
             ];
@@ -38,6 +40,7 @@ class ClinicRepository {
             pageSize,
             sortDirection,
         );
+
         const result: Array<{
             data: IClinic[];
             totalCount: { count: number }[];

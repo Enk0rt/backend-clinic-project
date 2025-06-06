@@ -16,23 +16,7 @@ class DoctorRepository {
 
         const filterObject: FilterQuery<IDoctor> = {};
 
-        if (query.search) {
-            const regex = new RegExp(`.*${query.search}.*`, "i");
-            filterObject.$or = [
-                { "userInfo.name": { $regex: regex } },
-                { "userInfo.surname": { $regex: regex } },
-                { "userInfo.age": { $regex: regex } },
-                { "userInfo.email": { $regex: regex } },
-                { "userInfo.createdAt": { $regex: regex } },
-                { phoneNumber: { $regex: regex } },
-            ];
-        }
-
-        if (
-            ["name", "surname", "age", "email", "createdAt"].includes(
-                query.sort,
-            )
-        ) {
+        if (["name", "surname", "age", "email"].includes(query.sort)) {
             query.sort = `userInfo.${query.sort}`;
         }
         const sortDirection: SortOrder =
@@ -48,6 +32,16 @@ class DoctorRepository {
             sortDirection,
         );
 
+        if (query.search) {
+            const regex = new RegExp(`.*${query.search}.*`, "i");
+            filterObject.$or = [
+                { "userInfo.name": { $regex: regex } },
+                { "userInfo.surname": { $regex: regex } },
+                { "userInfo.age": { $regex: regex } },
+                { "userInfo.email": { $regex: regex } },
+                { phoneNumber: { $regex: regex } },
+            ];
+        }
         const result: Array<{
             data: IDoctor[];
             totalCount: { count: number }[];

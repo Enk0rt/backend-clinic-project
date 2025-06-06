@@ -105,8 +105,10 @@ class AuthService {
         return user;
     }
 
-    public async verifyRequest(id: string): Promise<{ verifyToken: string }> {
-        const user = await userRepository.getById(id);
+    public async verifyRequest(
+        email: string,
+    ): Promise<{ verifyToken: string }> {
+        const user = await userRepository.getByEmail(email);
         const verifyToken = tokenService.generateActionToken(
             {
                 userId: user._id,

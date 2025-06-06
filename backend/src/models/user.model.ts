@@ -5,8 +5,8 @@ import { IUser } from "../interfaces/user.interface";
 
 const userSchema = new Schema(
     {
-        name: { type: String, required: true },
-        surname: { type: String, required: true },
+        name: { type: String, required: false },
+        surname: { type: String, required: false },
         age: { type: Number, required: false },
         email: { type: String, required: true },
         password: { type: String, required: true },

@@ -1,9 +1,8 @@
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
+import fs from "node:fs/promises";
+import path from "node:path";
 
-import * as handlebars from "handlebars";
-import * as nodemailer from "nodemailer";
-import { Transporter } from "nodemailer";
+import handlebars from "handlebars";
+import nodemailer, { Transporter } from "nodemailer";
 
 import { config } from "../configs/config";
 import { IEmailData } from "../constants/email.constants";

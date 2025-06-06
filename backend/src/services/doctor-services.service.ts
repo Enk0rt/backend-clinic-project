@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 
 import { StatusCodeEnums } from "../enums/status-code.enums";
 import { ApiError } from "../errors/api.error";

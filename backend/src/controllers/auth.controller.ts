@@ -134,16 +134,15 @@ class AuthController {
 
     public async verifyRequest(
         req: Request,
-        res: Response<IApiSuccessResponse<{ verifyToken: string }>>,
+        res: Response<IApiSuccessResponse<void | null>>,
         next: NextFunction,
     ) {
         try {
-            const { id } = req.params;
-            const verifyToken = await authService.verifyRequest(id);
+            const { email } = req.body as { email: string };
+            await authService.verifyRequest(email);
             res.status(StatusCodeEnums.OK).json({
-                data: verifyToken,
-                details:
-                    "New verify token is created successfully. Check your email!",
+                data: null,
+                details: "Check your email!",
             });
         } catch (e) {
             next(e);

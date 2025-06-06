@@ -15,7 +15,7 @@ import { clinicRepository } from "../repositories/clinic.repository";
 
 class ClinicService {
     public async getAll(query: IClinicQuery): Promise<IClinicResponse> {
-        const allowedSortNames = ["name,city,address"];
+        const allowedSortNames = ["name", "city", "address"];
         if (query.sort && !allowedSortNames.includes(query.sort)) {
             throw new ApiError(
                 StatusCodeEnums.BAD_REQUEST,

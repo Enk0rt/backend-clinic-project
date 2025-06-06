@@ -53,7 +53,6 @@ class UserController {
         try {
             const { id } = req.params;
             const dataToUpdate = req.body as IUserUpdateDTO;
-
             const data = await userService.updateUser(id, dataToUpdate);
             res.status(StatusCodeEnums.OK).json({
                 data,

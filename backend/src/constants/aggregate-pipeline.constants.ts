@@ -86,9 +86,6 @@ export const aggregatePipelineConstants = {
         sortDirection: 1 | -1,
     ) => [
         {
-            $match: filter,
-        },
-        {
             $lookup: {
                 from: "doctors",
                 localField: "doctors",
@@ -97,35 +94,53 @@ export const aggregatePipelineConstants = {
             },
         },
         {
-            $unwind: "$doctors",
-        },
-        {
             $lookup: {
                 from: "users",
                 localField: "doctors.userInfo",
                 foreignField: "_id",
-                as: "doctors.userInfo",
+                as: "allUsers",
             },
         },
         {
-            $unwind: "$doctors.userInfo",
-        },
-        {
-            $group: {
-                _id: "$_id",
-                name: { $first: "$name" },
-                city: { $first: "$city" },
-                address: { $first: "$address" },
-                services: { $first: "$services" },
+            $addFields: {
                 doctors: {
-                    $push: {
-                        _id: "$doctors._id",
-                        userInfo: {
-                            name: "$doctors.userInfo.name",
-                            surname: "$doctors.userInfo.surname",
-                            age: "$doctors.userInfo.age",
-                            email: "$doctors.userInfo.email",
-                            phoneNumber: "$doctors.phoneNumber",
+                    $map: {
+                        input: "$doctors",
+                        as: "doctor",
+                        in: {
+                            _id: "$$doctor._id",
+                            phoneNumber: "$$doctor.phoneNumber",
+                            userInfo: {
+                                $let: {
+                                    vars: {
+                                        matchedUser: {
+                                            $arrayElemAt: [
+                                                {
+                                                    $filter: {
+                                                        input: "$allUsers",
+                                                        as: "user",
+                                                        cond: {
+                                                            $eq: [
+                                                                "$$user._id",
+                                                                "$$doctor.userInfo",
+                                                            ],
+                                                        },
+                                                    },
+                                                },
+                                                0,
+                                            ],
+                                        },
+                                    },
+                                    in: {
+                                        name: "$$matchedUser.name",
+                                        surname: "$$matchedUser.surname",
+                                        age: "$$matchedUser.age",
+                                        email: "$$matchedUser.email",
+                                        phoneNumber:
+                                            "$$matchedUser.phoneNumber",
+                                    },
+                                },
+                            },
                         },
                     },
                 },
@@ -138,6 +153,9 @@ export const aggregatePipelineConstants = {
                 foreignField: "_id",
                 as: "services",
             },
+        },
+        {
+            $match: filter,
         },
         {
             $project: {

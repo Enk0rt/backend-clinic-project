@@ -12,16 +12,9 @@ import { syncRelationsService } from "./sync-relations.service";
 
 class DoctorService {
     public async getAll(query: IDoctorQuery): Promise<IDoctorResponse> {
-        const allowedSortFields = [
-            "name",
-            "surname",
-            "age",
-            "email",
-            "createdAt",
-            "phoneNumber",
-        ];
+        const allowedSortNames = ["name", "surname", "age", "email"];
 
-        if (query.sort && !allowedSortFields.includes(query.sort)) {
+        if (query.sort && !allowedSortNames.includes(query.sort)) {
             throw new ApiError(
                 StatusCodeEnums.BAD_REQUEST,
                 "Invalid sort value",
