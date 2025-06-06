@@ -56,3 +56,11 @@ docker exec -i 207cfa815487 mongorestore --archive --username=<myuser> --passwor
 ```bash
 docker-compose up --build
 ```
+
+- ## Postman endpoint interaction
+
+### 1. Import related postman collection
+
+### 2. Import and set required environment
+
+### 3. Use created user with admin role to have access for endpoints with root:admin
