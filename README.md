@@ -1,6 +1,6 @@
 # Project Setup and Usage Guide
 
-## Getting Started
+- ## Getting Started
 
 Follow these steps to clone, set up, build, and run the project with Docker:
 
@@ -33,7 +33,7 @@ Create two files .env and .env-db in the backend directory and add your environm
 docker-compose up --build
 ```
 
-## Restoring the Database
+- ## Restoring the Database
 
 To restore the MongoDB database from a dump archive, follow these steps:
 
