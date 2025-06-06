@@ -1,0 +1,1308 @@
+{
+	"info": {
+		"_postman_id": "3e4f66a7-8d10-4d57-9db8-99bbb62551a8",
+		"name": "clinicAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42830529"
+	},
+	"item": [
+		{
+			"name": "/users",
+			"item": [
+				{
+					"name": "changeInfo (root:Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Kiril",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Paliy",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "age",
+									"value": "23",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "doctor",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683f3833beae08569aafd46a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "rt",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sortDirection",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683d6fecd528aad830ae04b3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683e140e06354fc04b92a34f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/auth",
+			"item": [
+				{
+					"name": "getMe (Auth Required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNjMmRlYTM3NWExZmIxOGRlNDU1NGQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODc4MDc0OCwiZXhwIjoxNzQ4NzgxMDQ4fQ.E5b3mkhVoC5YlwmxEfjVpcjYTdarcad5IHUPB3xVNqA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMe  (Auth Required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNkN2JjYmYxZTlhMjEyMzNiY2VjN2MiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODg2MDk0OCwiZXhwIjoxNzQ4ODYxMjQ4fQ.PksrlcBPbhV0aI_O33DbFrA4a0PuZRgV3RHASjX8HKI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "palienko.crypto@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "alex",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "china",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "30",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "user",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/sign-up",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"pm.environment.set(\"accessToken\", res.data.tokens.accessToken)\r",
+									"pm.environment.set(\"refreshToken\", res.data.tokens.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM5NzA5MzJmM2Y1NjA1OWE1OGNlYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODU5NDgzNSwiZXhwIjoxNzQ4NTk1MTM1fQ.-RG11uUwV5XvzabLpGgbDH17eMsB7REQPXur_J8YO5c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "delovoyartem4ick@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/sign-in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"pm.environment.set(\"accessToken\", res.data.accessToken)\r",
+									"pm.environment.set(\"refreshToken\", res.data.refreshToken)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "refreshToken",
+									"value": "{{refreshToken}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recovery",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "delovoyartem4ick@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/recovery",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"recovery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "user@123.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/verify/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683d9bb9f9cac90556e2d050"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/verify/:token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNiMDAyNTg0OTEyOWZhOGFkZGMzZTYiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODY5NzEyNSwiZXhwIjoxNzQ4Njk3NDI1fQ.pLBMK_aX28hNVdUqh-o2Gt7Lq_JHai9rnuuSTCjudGg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recovery(approve)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "Pass12345",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Pali",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/recovery/:token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"recovery",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNjMmRlYTM3NWExZmIxOGRlNDU1NGQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODc3NDQ0MywiZXhwIjoxNzQ4Nzc1MDQzfQ.gt4Z7cHBeflAlO2pkxj5FzrsB6EwMY9zxSG_5V0k414"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/doctors",
+			"item": [
+				{
+					"name": "getAll (Auth required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/doctors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"doctors"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sortDirection",
+									"value": "-1",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "au",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById (Auth Required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/doctors/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"doctors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683f3833beae08569aafd46a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createDoctor (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Grisha",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Pechkin",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "30",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "doctor",
+									"type": "text"
+								},
+								{
+									"key": "services",
+									"value": "Pediatr,Phycology",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "123@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Pass123",
+									"type": "text"
+								},
+								{
+									"key": "clinics",
+									"value": "General",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/doctors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changeInfo (root: Admin, Doctor)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "services",
+									"value": "surgery",
+									"type": "text"
+								},
+								{
+									"key": "clinics",
+									"value": "gregory clinic, general",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/doctors/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"doctors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683f3833beae08569aafd46a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteDoctor (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/doctors/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"doctors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683e149ba293f00e85ccac0f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/clinics",
+			"item": [
+				{
+					"name": "getAll (Auth required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clinics?search=surgery",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clinics"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "city",
+									"disabled": true
+								},
+								{
+									"key": "sortDirection",
+									"value": "-1",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "surgery"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById (Auth Required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clinics/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clinics",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createClinic (root: Admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "First City Hospital",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Poltava",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Olesia Honchara St, 27А",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/clinics",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clinics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changeInfo (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clinics/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clinics",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68402c4d64069e354e5df5f2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteClinic (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/clinics/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"clinics",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683f9410b6381cdf71d46994"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/admin",
+			"item": [
+				{
+					"name": "changeRole (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "role",
+									"value": "user",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683dde65ecd1ae8629bd004d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactivateAccount (root: Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/deactivate/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"deactivate",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/services",
+			"item": [
+				{
+					"name": "getAll (Auth Required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sortDirection",
+									"value": "-1",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "ma",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById (Auth Required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68402ffceb7781f509cef43a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createService (root: admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Pediatr",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/services",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683e17b315384a2e445e2e80"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/services/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"services",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68402ffceb7781f509cef43a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
