@@ -25,6 +25,10 @@ class DoctorService {
     }
 
     public async getById(id: string): Promise<IDoctor> {
+        const doctor = await doctorRepository.getById(id);
+        if (!doctor) {
+            throw new ApiError(StatusCodeEnums.NOT_FOUND, "Doctor not found");
+        }
         return await doctorRepository.getById(id);
     }
 

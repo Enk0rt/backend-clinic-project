@@ -20,7 +20,7 @@ router.post(
     "/",
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.DOCTOR, RoleEnums.ADMIN]),
-    commonMiddleware.validateBody(ClinicValidator.createOrUpdate),
+    commonMiddleware.validateBody(ClinicValidator.create),
     clinicController.create,
 );
 router.put(
@@ -28,7 +28,7 @@ router.put(
     authMiddleware.checkAccessToken,
     permissionMiddleware.checkRole([RoleEnums.DOCTOR, RoleEnums.ADMIN]),
     commonMiddleware.isValidated("id"),
-    commonMiddleware.validateBody(ClinicValidator.createOrUpdate),
+    commonMiddleware.validateBody(ClinicValidator.update),
     clinicController.updateById,
 );
 router.delete(
