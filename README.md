@@ -56,9 +56,3 @@ docker exec -i 207cfa815487 mongorestore --archive --username=<myuser> --passwor
 ```bash
 docker-compose up --build
 ```
-
-## Postman Endpoints Collection
-
-A Postman collection with all API endpoints is included in the project.
-
-You can import it into Postman for easier testing and debugging.
