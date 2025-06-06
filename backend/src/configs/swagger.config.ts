@@ -464,6 +464,137 @@ const swaggerDocument: OpenAPIV3.Document = {
                 },
             },
         },
+        "/api/verify/:token": {
+            get: {
+                summary: "Verify email by token",
+                description:
+                    "Verifies user's email and activates their account using a verification token",
+                tags: ["Auth"],
+                parameters: [
+                    {
+                        name: "token",
+                        in: "path",
+                        required: true,
+                        description: "Verification token",
+                        schema: { type: "string" },
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "Email verified and account activated",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        data: {
+                                            $ref: "#/components/schemas/User",
+                                        },
+                                        details: {
+                                            type: "string",
+                                            example:
+                                                "Email is successfully verified, account activated",
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    400: { description: "Invalid or expired token" },
+                    404: { description: "User not found" },
+                },
+            },
+            patch: {
+                summary: "Verify email by token (alternative method)",
+                description:
+                    "Alternative endpoint to verify user's email by token",
+                tags: ["Auth"],
+                parameters: [
+                    {
+                        name: "token",
+                        in: "path",
+                        required: true,
+                        description: "Verification token",
+                        schema: { type: "string" },
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "Email verified and account activated",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        data: {
+                                            $ref: "#/components/schemas/User",
+                                        },
+                                        details: {
+                                            type: "string",
+                                            example:
+                                                "Email is successfully verified, account activated",
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    400: { description: "Invalid or expired token" },
+                    404: { description: "User not found" },
+                },
+            },
+        },
+        "/api/auth/verify": {
+            post: {
+                summary: "Request new verification email",
+                description:
+                    "Sends a verification email to the specified address",
+                tags: ["Auth"],
+                requestBody: {
+                    description: "Email to send verification to",
+                    required: true,
+                    content: {
+                        "application/json": {
+                            schema: {
+                                type: "object",
+                                properties: {
+                                    email: {
+                                        type: "string",
+                                        format: "email",
+                                        example: "user@example.com",
+                                    },
+                                },
+                                required: ["email"],
+                            },
+                        },
+                    },
+                },
+                responses: {
+                    200: {
+                        description: "Verification email sent",
+                        content: {
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        data: {
+                                            type: "string",
+                                            nullable: true,
+                                        },
+                                        details: {
+                                            type: "string",
+                                            example: "Check your email!",
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    400: { description: "Invalid email format" },
+                    404: { description: "User with email not found" },
+                },
+            },
+        },
         "/api/users": {
             get: {
                 summary: "Get users list",
@@ -1453,7 +1584,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                 },
             },
         },
-        "/admin/:id": {
+        "/api/admin/:id": {
             post: {
                 summary: "Change user role by ID",
                 description: "Allows ADMIN to change the role of a user",
@@ -1527,7 +1658,7 @@ const swaggerDocument: OpenAPIV3.Document = {
                 },
             },
         },
-        "/admin/deactivate/:id": {
+        "/api/admin/deactivate/:id": {
             patch: {
                 summary: "Deactivate user by ID",
                 description: "Allows ADMIN to deactivate a user account",
@@ -1566,137 +1697,6 @@ const swaggerDocument: OpenAPIV3.Document = {
                     401: { description: "Unauthorized" },
                     403: { description: "Forbidden - only admins allowed" },
                     404: { description: "User not found" },
-                },
-            },
-        },
-        "/verify/:token": {
-            get: {
-                summary: "Verify email by token",
-                description:
-                    "Verifies user's email and activates their account using a verification token",
-                tags: ["Auth"],
-                parameters: [
-                    {
-                        name: "token",
-                        in: "path",
-                        required: true,
-                        description: "Verification token",
-                        schema: { type: "string" },
-                    },
-                ],
-                responses: {
-                    200: {
-                        description: "Email verified and account activated",
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    type: "object",
-                                    properties: {
-                                        data: {
-                                            $ref: "#/components/schemas/User",
-                                        },
-                                        details: {
-                                            type: "string",
-                                            example:
-                                                "Email is successfully verified, account activated",
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    400: { description: "Invalid or expired token" },
-                    404: { description: "User not found" },
-                },
-            },
-            patch: {
-                summary: "Verify email by token (alternative method)",
-                description:
-                    "Alternative endpoint to verify user's email by token",
-                tags: ["Auth"],
-                parameters: [
-                    {
-                        name: "token",
-                        in: "path",
-                        required: true,
-                        description: "Verification token",
-                        schema: { type: "string" },
-                    },
-                ],
-                responses: {
-                    200: {
-                        description: "Email verified and account activated",
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    type: "object",
-                                    properties: {
-                                        data: {
-                                            $ref: "#/components/schemas/User",
-                                        },
-                                        details: {
-                                            type: "string",
-                                            example:
-                                                "Email is successfully verified, account activated",
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    400: { description: "Invalid or expired token" },
-                    404: { description: "User not found" },
-                },
-            },
-        },
-        "/verify": {
-            post: {
-                summary: "Request new verification email",
-                description:
-                    "Sends a verification email to the specified address",
-                tags: ["Auth"],
-                requestBody: {
-                    description: "Email to send verification to",
-                    required: true,
-                    content: {
-                        "application/json": {
-                            schema: {
-                                type: "object",
-                                properties: {
-                                    email: {
-                                        type: "string",
-                                        format: "email",
-                                        example: "user@example.com",
-                                    },
-                                },
-                                required: ["email"],
-                            },
-                        },
-                    },
-                },
-                responses: {
-                    200: {
-                        description: "Verification email sent",
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    type: "object",
-                                    properties: {
-                                        data: {
-                                            type: "string",
-                                            nullable: true,
-                                        },
-                                        details: {
-                                            type: "string",
-                                            example: "Check your email!",
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    400: { description: "Invalid email format" },
-                    404: { description: "User with email not found" },
                 },
             },
         },
