@@ -63,8 +63,8 @@ class DoctorRepository {
                 path: "userInfo",
                 select: "name surname age email phoneNumber",
             })
-            .populate({ path: "services", select: "name" })
-            .populate({ path: "clinics", select: "name city address" });
+            .populate({ path: "services", select: "_id name" })
+            .populate({ path: "clinics", select: "_id name city address" });
     }
 
     public updateById(id: string, data: Partial<IDoctor>): Promise<IDoctor> {
@@ -76,8 +76,8 @@ class DoctorRepository {
                 path: "userInfo",
                 select: "name surname age email honeNumber",
             })
-            .populate({ path: "services", select: "name" })
-            .populate({ path: "clinics", select: "name city address" });
+            .populate({ path: "services", select: "_id name" })
+            .populate({ path: "clinics", select: "_id name city address" });
     }
 
     public create(data: Partial<IDoctor>): Promise<IDoctor> {

@@ -1,7 +1,12 @@
 export const normalizeNames = (input?: string[] | string): string[] => {
     if (!input) return [];
-    return (Array.isArray(input) ? input : input.split(","))
-        .filter((val): val is string => typeof val === "string")
-        .map((val) => val.trim().toLowerCase())
+
+    const rawArray = Array.isArray(input) ? input : [input];
+
+    const normalized = rawArray
+        .flatMap((item) => item.split(","))
+        .map((val) => val.trim())
         .filter((val) => val.length > 0);
+
+    return Array.from(new Set(normalized));
 };

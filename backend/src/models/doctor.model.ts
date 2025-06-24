@@ -34,7 +34,7 @@ function transformDoctor(doc: any, ret: any) {
     if (ret.services && Array.isArray(ret.services)) {
         ret.services = ret.services.map((service: any) =>
             typeof service === "object" && service !== null
-                ? service.name
+                ? { _id: service._id, name: service.name }
                 : service,
         );
     }
@@ -43,6 +43,7 @@ function transformDoctor(doc: any, ret: any) {
         ret.clinics = ret.clinics.map((clinic: any) =>
             typeof clinic === "object" && clinic !== null
                 ? {
+                      _id: clinic._id,
                       name: clinic.name,
                       city: clinic.city,
                       address: clinic.address,

@@ -43,7 +43,10 @@ export const aggregatePipelineConstants = {
                     $map: {
                         input: "$services",
                         as: "service",
-                        in: "$$service.name",
+                        in: {
+                            _id: "$$service._id",
+                            name: "$$service.name",
+                        },
                     },
                 },
                 clinics: {
@@ -51,6 +54,7 @@ export const aggregatePipelineConstants = {
                         input: "$clinics",
                         as: "clinic",
                         in: {
+                            _id: "$$clinic._id",
                             name: "$$clinic.name",
                             city: "$$clinic.city",
                             address: "$$clinic.address",
