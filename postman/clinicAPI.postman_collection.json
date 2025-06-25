@@ -108,25 +108,23 @@
 								{
 									"key": "name",
 									"value": "Kiril",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "surname",
 									"value": "Paliy",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "age",
-									"value": "23",
-									"type": "text",
-									"disabled": true
+									"value": "24",
+									"type": "text"
 								},
 								{
-									"key": "role",
-									"value": "doctor",
-									"type": "text",
-									"disabled": true
+									"key": "phoneNumber",
+									"value": "+380953403188",
+									"type": "text"
 								}
 							]
 						},
