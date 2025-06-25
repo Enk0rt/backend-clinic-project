@@ -20,6 +20,8 @@ class UserRepository {
             filteredObject.$or = [
                 { name: { $regex: regex } },
                 { surname: { $regex: regex } },
+                { email: { $regex: regex } },
+                { phoneNumber: { $regex: regex } },
             ];
         }
         const sortDirection: SortOrder =

@@ -4,21 +4,21 @@ import { zod } from "../zod";
 export class ClinicValidator {
     public static create = zod.object({
         name: zod
-            .string()
+            .string({ required_error: "Name is required" })
             .min(2, "Name must be at least 2 characters")
             .max(100, "Name must be at most 100 characters")
             .regex(new RegExp(RegexEnums.CLINIC_NAME), "Invalid name format")
             .nonempty("Name is required"),
 
         city: zod
-            .string()
+            .string({ required_error: "City is required" })
             .min(2, "City must be at least 2 characters")
             .max(100, "City must be at most 100 characters")
             .regex(new RegExp(RegexEnums.CITY), "Invalid city name format")
             .nonempty("City is required"),
 
         address: zod
-            .string()
+            .string({ required_error: "Address is required" })
             .min(5, "Address must be at least 5 characters")
             .max(200, "Address must be at most 200 characters")
             .regex(new RegExp(RegexEnums.ADDRESS), "Invalid address format")

@@ -46,9 +46,9 @@ export class DoctorValidator {
                 return val;
             },
             zod
-                .array(
-                    zod.string({ required_error: "Servicnamnes is required" }),
-                )
+                .array(zod.string(), {
+                    required_error: "Services field is required",
+                })
                 .nonempty("At least one service is required"),
         ),
 
@@ -58,7 +58,9 @@ export class DoctorValidator {
                 return val;
             },
             zod
-                .array(zod.string({ required_error: "Clinics is required" }))
+                .array(zod.string(), {
+                    required_error: "Clinics field is required",
+                })
                 .nonempty("At least one clinic is required"),
         ),
     });

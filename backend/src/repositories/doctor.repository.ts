@@ -7,6 +7,7 @@ import {
     IDoctorResponse,
 } from "../interfaces/doctor.interface";
 import { Doctor } from "../models/doctor.model";
+import { escapeRegex } from "../utils/escapeRegex";
 
 class DoctorRepository {
     public async getAll(query: IDoctorQuery): Promise<IDoctorResponse> {
@@ -16,13 +17,24 @@ class DoctorRepository {
 
         const filterObject: FilterQuery<IDoctor> = {};
 
-        if (["name", "surname", "age", "email"].includes(query.sort)) {
+        if (["name", "surname", "age", "email"].includes(query.sort))
             query.sort = `userInfo.${query.sort}`;
-        }
+
         const sortDirection: SortOrder =
             query.sortDirection === "desc" || Number(query.sortDirection) === -1
                 ? -1
                 : 1;
+
+        if (query.search) {
+            const safeSearch = escapeRegex(query.search.trim()); // <- захищає від + і інших
+            const regex = new RegExp(safeSearch, "i");
+            filterObject.$or = [
+                { "userInfo.name": { $regex: regex } },
+                { "userInfo.surname": { $regex: regex } },
+                { "userInfo.email": { $regex: regex } },
+                { "userInfo.phoneNumber": { $regex: regex } },
+            ];
+        }
 
         const pipeline = aggregatePipelineConstants.doctorAggregatePipeline(
             query,
@@ -32,16 +44,6 @@ class DoctorRepository {
             sortDirection,
         );
 
-        if (query.search) {
-            const regex = new RegExp(`.*${query.search}.*`, "i");
-            filterObject.$or = [
-                { "userInfo.name": { $regex: regex } },
-                { "userInfo.surname": { $regex: regex } },
-                { "userInfo.age": { $regex: regex } },
-                { "userInfo.email": { $regex: regex } },
-                { phoneNumber: { $regex: regex } },
-            ];
-        }
         const result: Array<{
             data: IDoctor[];
             totalCount: { count: number }[];
