@@ -45,10 +45,10 @@ cd dumpDB
 
 ### 2. Run the restore command
 
-Make sure to replace 207cfa815487, myuser, and mypassword with your container ID/name and MongoDB credentials.
+Make sure to replace container_name/id, myuser, and mypassword with your container ID/name and MongoDB credentials.
 
 ```bash
-docker exec -i 207cfa815487 mongorestore --archive --username=<myuser> --password=<mypassword> --authenticationDatabase=admin < dump.archive
+docker exec -i <container_name/id> mongorestore --archive=dump.archive --gzip --username=<myuser> --password=<mypassword> --authenticationDatabase=admin
 ```
 
 ### 3. Rebuild and restart Docker containers

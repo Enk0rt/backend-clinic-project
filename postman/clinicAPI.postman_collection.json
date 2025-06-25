@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "3e4f66a7-8d10-4d57-9db8-99bbb62551a8",
 		"name": "clinicAPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "42830529"
 	},
 	"item": [
@@ -10,17 +10,95 @@
 			"name": "/users",
 			"item": [
 				{
+					"name": "getAll (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "rt",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sortDirection",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById (root: Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "683f3833beae08569aafd46a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "changeInfo (root:Admin)",
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "PUT",
 						"header": [],
@@ -73,107 +151,13 @@
 					"response": []
 				},
 				{
-					"name": "getAll (root: Admin)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/users",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": "rt",
-									"disabled": true
-								},
-								{
-									"key": "sort",
-									"value": "name",
-									"disabled": true
-								},
-								{
-									"key": "sortDirection",
-									"value": "2",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getById (root: Admin)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "683d6fecd528aad830ae04b3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "deleteUser (root: Admin)",
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
@@ -190,7 +174,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "683e140e06354fc04b92a34f"
+									"value": "685bbf72d56602090cfca5be"
 								}
 							]
 						}
@@ -207,27 +191,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNjMmRlYTM3NWExZmIxOGRlNDU1NGQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODc4MDc0OCwiZXhwIjoxNzQ4NzgxMDQ4fQ.E5b3mkhVoC5YlwmxEfjVpcjYTdarcad5IHUPB3xVNqA",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"me"
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/me"
 					},
 					"response": []
 				},
@@ -236,27 +206,13 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNkN2JjYmYxZTlhMjEyMzNiY2VjN2MiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODg2MDk0OCwiZXhwIjoxNzQ4ODYxMjQ4fQ.PksrlcBPbhV0aI_O33DbFrA4a0PuZRgV3RHASjX8HKI",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/me",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"me"
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/me"
 					},
 					"response": []
 				},
@@ -270,7 +226,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "palienko.crypto@gmail.com",
+									"value": "12321324@gmail.com",
 									"type": "text"
 								},
 								{
@@ -280,12 +236,12 @@
 								},
 								{
 									"key": "name",
-									"value": "alex",
+									"value": "Alex",
 									"type": "text"
 								},
 								{
 									"key": "surname",
-									"value": "china",
+									"value": "China",
 									"type": "text"
 								},
 								{
@@ -294,24 +250,13 @@
 									"type": "text"
 								},
 								{
-									"key": "role",
-									"value": "user",
-									"type": "text",
-									"disabled": true
+									"key": "phoneNumber",
+									"value": "+380663424325",
+									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/sign-up",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"sign-up"
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/sign-up"
 					},
 					"response": []
 				},
@@ -334,13 +279,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM5NzA5MzJmM2Y1NjA1OWE1OGNlYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODU5NDgzNSwiZXhwIjoxNzQ4NTk1MTM1fQ.-RG11uUwV5XvzabLpGgbDH17eMsB7REQPXur_J8YO5c",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM5NzA5MzJmM2Y1NjA1OWE1OGNlYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODU5NDgzNSwiZXhwIjoxNzQ4NTk1MTM1fQ.-RG11uUwV5XvzabLpGgbDH17eMsB7REQPXur_J8YO5c"
+							}
 						},
 						"method": "POST",
 						"header": [],
@@ -359,17 +300,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/sign-in",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"sign-in"
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/sign-in"
 					},
 					"response": []
 				},
@@ -402,17 +333,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/refresh",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"refresh"
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/refresh"
 					},
 					"response": []
 				},
@@ -426,22 +347,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "delovoyartem4ick@gmail.com",
+									"value": "palienko.crypto@gmail.com",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/recovery",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"recovery"
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/recovery"
 					},
 					"response": []
 				},
@@ -455,29 +366,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "user@123.com",
+									"value": "palienko.crypto@gmail.com",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/verify/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"verify",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "683d9bb9f9cac90556e2d050"
-								}
-							]
-						}
+						"url": "{{baseUrl}}/api/auth/verify"
 					},
 					"response": []
 				},
@@ -500,7 +394,7 @@
 							"variable": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNiMDAyNTg0OTEyOWZhOGFkZGMzZTYiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODY5NzEyNSwiZXhwIjoxNzQ4Njk3NDI1fQ.pLBMK_aX28hNVdUqh-o2Gt7Lq_JHai9rnuuSTCjudGg"
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNmMzgzM2JlYWUwODU2OWFhZmQ0NmEiLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNzQ5MTcwNTA3LCJleHAiOjE3NDkxNzExMDd9.5IJuWLXHbx3Z80X5Xi86Rxr_bsLeO2EN_EH6S7j3XP8"
 								}
 							]
 						}
@@ -545,7 +439,7 @@
 							"variable": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNjMmRlYTM3NWExZmIxOGRlNDU1NGQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODc3NDQ0MywiZXhwIjoxNzQ4Nzc1MDQzfQ.gt4Z7cHBeflAlO2pkxj5FzrsB6EwMY9zxSG_5V0k414"
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODNmMzgzM2JlYWUwODU2OWFhZmQ0NmEiLCJyb2xlIjoiZG9jdG9yIiwiaWF0IjoxNzUwODQxMDA5LCJleHAiOjE3NTA4NDE2MDl9.1_y99RI1O_o-fk5WiKZR3Bx0QZD3IwRN2bs1L35HFNU"
 								}
 							]
 						}
@@ -562,13 +456,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -604,7 +494,7 @@
 								},
 								{
 									"key": "search",
-									"value": "au",
+									"value": "+3805",
 									"disabled": true
 								}
 							]
@@ -617,13 +507,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -652,71 +538,22 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "Grisha",
-									"type": "text"
-								},
-								{
-									"key": "surname",
-									"value": "Pechkin",
-									"type": "text"
-								},
-								{
-									"key": "age",
-									"value": "30",
-									"type": "text"
-								},
-								{
-									"key": "role",
-									"value": "doctor",
-									"type": "text"
-								},
-								{
-									"key": "services",
-									"value": "Pediatr,Phycology",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "123@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "Pass123",
-									"type": "text"
-								},
-								{
-									"key": "clinics",
-									"value": "General",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"1234121122111@gmail.com\",\r\n    \"password\": \"Pass123\",\r\n    \"name\": \"John\",\r\n    \"surname\": \"Johanson\",\r\n    \"age\": 24,\r\n    \"role\": \"doctor\",\r\n    \"phoneNumber\": \"+380501362132\",\r\n    \"services\": [\r\n        \"surgery\",\r\n        \"terapevt\"\r\n    ],\r\n    \"clinics\": [\r\n        \"Medion\",\r\n        \"Cringe\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/doctors",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"doctors"
-							]
-						}
+						"url": "{{baseUrl}}/api/doctors"
 					},
 					"response": []
 				},
@@ -725,36 +562,20 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "services",
-									"value": "surgery",
-									"type": "text"
-								},
-								{
-									"key": "clinics",
-									"value": "gregory clinic, general",
-									"type": "text"
-								},
-								{
-									"key": "",
-									"value": "",
-									"type": "text",
-									"disabled": true
+							"mode": "raw",
+							"raw": "{\r\n   \"services\": [\"surgery\", \"terapevt\"],\r\n    \"clinics\": [\"Medion\",\"general\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/doctors/:id",
@@ -769,7 +590,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "683f3833beae08569aafd46a"
+									"value": "685bbe69d56602090cfca578"
 								}
 							]
 						}
@@ -781,13 +602,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
@@ -804,7 +621,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "683e149ba293f00e85ccac0f"
+									"value": "685bbf72d56602090cfca5be"
 								}
 							]
 						}
@@ -821,18 +638,14 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/clinics?search=surgery",
+							"raw": "{{baseUrl}}/api/clinics",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -853,17 +666,18 @@
 								},
 								{
 									"key": "sort",
-									"value": "city",
+									"value": "name",
 									"disabled": true
 								},
 								{
 									"key": "sortDirection",
-									"value": "-1",
+									"value": "1",
 									"disabled": true
 								},
 								{
 									"key": "search",
-									"value": "surgery"
+									"value": "ol",
+									"disabled": true
 								}
 							]
 						}
@@ -875,13 +689,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -898,7 +708,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "68402c4d64069e354e5df5f2"
 								}
 							]
 						}
@@ -908,6 +718,12 @@
 				{
 					"name": "createClinic (root: Admin)",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -915,31 +731,22 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "First City Hospital",
+									"value": "Okhmadit",
 									"type": "text"
 								},
 								{
 									"key": "city",
-									"value": "Poltava",
+									"value": "Kyiv",
 									"type": "text"
 								},
 								{
 									"key": "address",
-									"value": "Olesia Honchara St, 27А",
+									"value": "Peremogy, 1st",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/clinics",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"clinics"
-							]
-						}
+						"url": "{{baseUrl}}/api/clinics"
 					},
 					"response": []
 				},
@@ -948,16 +755,32 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "general",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Kyiv",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Zdorova street, 5",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
 							"raw": "{{baseUrl}}/api/clinics/:id",
 							"host": [
@@ -983,13 +806,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
@@ -1006,7 +825,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "683f9410b6381cdf71d46994"
+									"value": "685bc369067df81d1f42f158"
 								}
 							]
 						}
@@ -1023,13 +842,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "POST",
 						"header": [],
@@ -1038,7 +853,7 @@
 							"urlencoded": [
 								{
 									"key": "role",
-									"value": "user",
+									"value": "doctor",
 									"type": "text"
 								}
 							]
@@ -1056,7 +871,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "683dde65ecd1ae8629bd004d"
+									"value": "684244e9dfa3af4665e7998b"
 								}
 							]
 						}
@@ -1099,18 +914,14 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/services",
+							"raw": "{{baseUrl}}/api/services?sort=name",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1131,8 +942,7 @@
 								},
 								{
 									"key": "sort",
-									"value": "name",
-									"disabled": true
+									"value": "name"
 								},
 								{
 									"key": "sortDirection",
@@ -1141,7 +951,7 @@
 								},
 								{
 									"key": "search",
-									"value": "ma",
+									"value": "rge",
 									"disabled": true
 								}
 							]
@@ -1154,13 +964,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "GET",
 						"header": [],
@@ -1177,7 +983,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "68402ffceb7781f509cef43a"
+									"value": "68419df6c740638e01fa2860"
 								}
 							]
 						}
@@ -1189,13 +995,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "POST",
 						"header": [],
@@ -1204,21 +1006,12 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Pediatr",
+									"value": "Cardiolog",
 									"type": "text"
 								}
 							]
 						},
-						"url": {
-							"raw": "{{baseUrl}}/api/services",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"services"
-							]
-						}
+						"url": "{{baseUrl}}/api/services"
 					},
 					"response": []
 				},
@@ -1227,13 +1020,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "DELETE",
 						"header": [],
@@ -1250,7 +1039,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "683e17b315384a2e445e2e80"
+									"value": "685bc44b067df81d1f42f1b6"
 								}
 							]
 						}
@@ -1262,13 +1051,9 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{accessToken}}",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "{{accessToken}}"
+							}
 						},
 						"method": "PUT",
 						"header": [],
@@ -1277,7 +1062,7 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "",
+									"value": "psycologist",
 									"type": "text"
 								}
 							]
