@@ -11,7 +11,10 @@ class CommonMiddleware {
             try {
                 const id = req.params[key];
                 if (!isObjectIdOrHexString(id)) {
-                    throw new ApiError(400, `Invalid [${key}]`);
+                    throw new ApiError(
+                        StatusCodeEnums.BAD_REQUEST,
+                        `Invalid [${key}]`,
+                    );
                 }
                 next();
             } catch (e) {
@@ -25,7 +28,7 @@ class CommonMiddleware {
             if (!req.body) {
                 return next(
                     new ApiError(
-                        400,
+                        StatusCodeEnums.BAD_REQUEST,
                         "At least one field must be provided to update",
                     ),
                 );

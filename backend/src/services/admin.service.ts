@@ -50,13 +50,8 @@ class AdminService {
         await userService.isEmailUnique(data.email);
         const password = await passwordService.hashPass(data.password);
         const newUser = await User.create({
-            name: data.name,
-            surname: data.surname,
-            age: data.age,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
+            ...data,
             password,
-            role: RoleEnums.DOCTOR,
         });
         const verifyToken = tokenService.generateActionToken(
             {

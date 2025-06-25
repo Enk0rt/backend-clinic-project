@@ -4,22 +4,22 @@ import { zod } from "../zod";
 export class UserValidator {
     public static createUser = zod.object({
         email: zod
-            .string()
-            .nonempty("Email is required")
+            .string({ required_error: "Email is required" })
             .email("Invalid email format")
-            .trim(),
+            .trim()
+            .nonempty("Email is required"),
         password: zod
-            .string()
-            .nonempty("Password is required")
-            .regex(new RegExp(RegexEnums.PASSWORD), "Invalid password format"),
+            .string({ required_error: "Password is required" })
+            .regex(new RegExp(RegexEnums.PASSWORD), "Invalid password format")
+            .nonempty("Password is required"),
         name: zod
-            .string()
-            .nonempty("Name is required")
-            .regex(new RegExp(RegexEnums.NAME), "Invalid name format"),
+            .string({ required_error: "Name is required" })
+            .regex(new RegExp(RegexEnums.NAME), "Invalid name format")
+            .nonempty("Name is required"),
         surname: zod
-            .string()
-            .nonempty("Surname is required")
-            .regex(new RegExp(RegexEnums.NAME), "Invalid surname format"),
+            .string({ required_error: "Name is required" })
+            .regex(new RegExp(RegexEnums.NAME), "Invalid surname format")
+            .nonempty("Surname is required"),
         age: zod.preprocess((val) => {
             if (typeof val === "string") {
                 const parsed = Number(val);
@@ -28,12 +28,9 @@ export class UserValidator {
             return val;
         }, zod.number().min(2, "Age must be more then 0").max(100, "Age must be less then 200").optional()),
         phoneNumber: zod
-            .string()
-            .nonempty("Phone number is required")
-            .regex(
-                new RegExp(RegexEnums.PHONE),
-                "Invalid phone number  format",
-            ),
+            .string({ required_error: "Phone number is required" })
+            .regex(new RegExp(RegexEnums.PHONE), "Invalid phone number  format")
+            .nonempty("Phone number is required"),
     });
 
     public static updateUser = zod.object({
