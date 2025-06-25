@@ -29,7 +29,7 @@ class CommonMiddleware {
                 return next(
                     new ApiError(
                         StatusCodeEnums.BAD_REQUEST,
-                        "At least one field must be provided to update",
+                        "At least one field must be provided",
                     ),
                 );
             }
