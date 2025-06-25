@@ -278,7 +278,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODM5NzA5MzJmM2Y1NjA1OWE1OGNlYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0ODU5NDgzNSwiZXhwIjoxNzQ4NTk1MTM1fQ.-RG11uUwV5XvzabLpGgbDH17eMsB7REQPXur_J8YO5c"
+								"token": "{{accessToken}}"
 							}
 						},
 						"method": "POST",
@@ -414,12 +414,6 @@
 									"key": "password",
 									"value": "Pass12345",
 									"type": "text"
-								},
-								{
-									"key": "surname",
-									"value": "Pali",
-									"type": "text",
-									"disabled": true
 								}
 							]
 						},
