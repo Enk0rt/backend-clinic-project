@@ -12,18 +12,18 @@ export type IEmailConstants<T extends Record<string, string>> = {
 export const emailConstants: IEmailConstants<typeof EmailEnums> = {
     [EmailEnums.WELCOME]: {
         subject: "Welcome",
-        template: "Welcome",
+        template: "welcome",
     },
     [EmailEnums.ACTIVATE]: {
         subject: "Activate",
-        template: "Activate",
+        template: "activate",
     },
     [EmailEnums.RECOVERY]: {
         subject: "Recovery",
-        template: "Recovery",
+        template: "recovery",
     },
     [EmailEnums.RECOVERY_SUCCESS]: {
         subject: "Recovery",
-        template: "Recovery-success",
+        template: "recovery-success",
     },
 };
